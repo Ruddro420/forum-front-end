@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Bell, MessageSquare, User, Menu, X, Plus } from 'lucide-react';
+import { Search, Bell, MessageSquare, User, Menu, X, Plus, LogIn } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../Auth/context/AuthContext';
 
@@ -7,9 +7,9 @@ const Header = ({ onMenuToggle, isMenuOpen }) => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const navigate = useNavigate();
   // load users
-  const {user} = useAuth();
+  const { user } = useAuth();
   // console.log(user);
-  
+
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-[999]">
@@ -51,17 +51,23 @@ const Header = ({ onMenuToggle, isMenuOpen }) => {
               <Search className="h-5 w-5" />
             </button>
 
-            <button onClick={()=>navigate("/ask-question")} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center">
+            {user ? <button onClick={() => navigate("/ask-question")} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center">
               <Plus className="h-4 w-4 mr-2" />
               <span className="hidden sm:inline">Ask Question</span>
             </button>
+              :
+              <button onClick={() => navigate("/login")} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center">
+                <LogIn className="h-4 w-4 mr-2"/>
+                <span className="hidden sm:inline">Login</span>
+              </button>}
+
 
             {/* <button className="p-2 text-gray-400 hover:text-gray-500 relative">
               <Bell className="h-5 w-5" />
               <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">3</span>
             </button> */}
 
-            <div onClick={()=>navigate("/profile")} className="flex items-center space-x-3 cursor-pointer">
+            <div onClick={() => navigate("/profile")} className="flex items-center space-x-3 cursor-pointer">
               <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                 <User className="h-4 w-4 text-white" />
               </div>

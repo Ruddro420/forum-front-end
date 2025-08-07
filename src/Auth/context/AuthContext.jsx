@@ -1,7 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext(null);
 
@@ -49,7 +48,7 @@ export const AuthProvider = ({ children }) => {
             const data = await res.json();
             console.log("logindata", data.user);
             // setUser(data.user);
-
+            fetchUserPost(); // Fetch user data after login
             // If API returns a user id
             if (data?.user?.id) {
                 sessionStorage.setItem("userId", data.user.id); // optional
@@ -90,6 +89,34 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
         }
     };
+
+    //fetch user specific posts
+    const [userPost, setUserPosts] = useState([])
+     const fetchUserPost = React.useCallback(async () => {
+        try {
+            const res = await fetch(`${import.meta.env.VITE_SERVER_API}/posts/filter/${user.category_id}/${user.sub_category_id}`);
+            if (!res.ok) throw new Error("Failed to fetch user");
+            const data = await res.json();
+            setUserPosts(data.data);
+        } catch (error) {
+            console.error("Fetch user error:", error);
+        } finally {
+            setLoading(false);
+        }
+    }, [user]);
+
+
+
+
+
+
+
+
+
+
+
+
+
     const [stats, setStats] = useState([])
     // load statistics data
     const fetchTotalData = async () => {
@@ -162,14 +189,20 @@ export const AuthProvider = ({ children }) => {
         fetchTotalData();
         fetchRecentPost();
         fetchFeaturedTags();
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if (user && user.category_id && user.sub_category_id) {
+            fetchUserPost();
+        }
+    }, [user, fetchUserPost]);
 
 
 
 
 
     return (
-        <AuthContext.Provider value={{ user, loading, login, logout, fetchUser, posts, stats, recentPost, fetauredTag, fetchPost,categories ,fetchTotalData}}>
+        <AuthContext.Provider value={{ user, userPost, loading, login, logout, fetchUser, posts, stats, recentPost, fetauredTag, fetchPost,categories ,fetchTotalData}}>
             {children}
         </AuthContext.Provider>
     );
