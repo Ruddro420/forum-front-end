@@ -12,7 +12,7 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
     // const AuthEmail = "user@gmail.com";
     // const AuthPassword = "user";
-    const { login,user } = useAuth()
+    const { login } = useAuth()
 
     const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ const Login = () => {
 
         if (res.success) {
             toast.success("Login successful!");
-            navigate("/dashboard");
+            navigate("/");
         } else {
             toast.error(res.message || "Login failed!");
         }

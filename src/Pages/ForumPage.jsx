@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FilterBar from "../components/FilterBar";
 import ActivityFeed from "../components/ActivityFeed";
 import StatsWidget from "../components/StatsWidget";
@@ -6,16 +6,29 @@ import QuestionList from "../components/Question/QuestionList";
 import { useAuth } from "../Auth/context/AuthContext";
 
 const ForumPage = () => {
-  const { posts, fetauredTag, categories } = useAuth();
+  const { posts, fetauredTag, categories, user, userPost } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+
+
+  
+  const [showposts, setShowposts] = useState(posts);
+
+  useEffect(() => {
+  
+  if(user){
+    setShowposts(userPost);
+  }else{
+    setShowposts(posts);
+  }
+  }, [posts, userPost, user]);
 
   const postsPerPage = 4;
 
   // 👉 Filter posts by selected category
   const filteredPosts = selectedCategoryId
-    ? posts.filter(post => post.category_id === selectedCategoryId)
-    : posts;
+    ? showposts.filter(post => post.category_id === selectedCategoryId)
+    : showposts;
 
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
   const paginatedPosts = filteredPosts.slice(
