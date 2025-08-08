@@ -163,41 +163,60 @@ const Chatbox = () => {
   if (error) return <div style={{ color: 'red' }}>{error}</div>;
 
   return (
-    <div style={{ maxWidth: 600, margin: 'auto' }}>
-      <h2>Chat with Admin</h2>
-      <div
-        style={{
-          height: 300,
-          overflowY: 'auto',
-          border: '1px solid #ddd',
-          padding: 10,
-          marginBottom: 8,
-          backgroundColor: '#f9f9f9',
-        }}
-      >
+    <div className="flex flex-col h-screen max-w-lg mx-auto border rounded-lg shadow-lg bg-white">
+      {/* Header */}
+      <header className="px-6 py-4 bg-gray-100 border-b border-gray-300 rounded-t-lg">
+        <h2 className="text-xl font-semibold text-gray-800">Chat with Admin</h2>
+      </header>
+
+      {/* Messages Container */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
         {messages.length === 0 ? (
-          <div>No messages yet</div>
+          <div className="text-center text-gray-500 italic select-none mt-8">
+            No messages yet
+          </div>
         ) : (
-          messages.map((msg, i) => (
-            <div key={msg.id || i} style={{ marginBottom: 10 }}>
-              <strong>{msg.sender_name}:</strong> {msg.message}
-              <div style={{ fontSize: 12, color: '#666' }}>
-                {new Date(msg.timestamp).toLocaleTimeString()}
+          messages.map((msg, i) => {
+            const isSender = msg.sender_name === 'Admin'; // Adjust as needed
+            return (
+              <div
+                key={msg.id || i}
+                className={`max-w-3/4 px-4 py-2 rounded-2xl shadow-sm break-words
+                  ${isSender ? 'bg-green-100 self-end text-gray-900' : 'bg-white self-start text-gray-800'}
+                `}
+                style={{ wordBreak: 'break-word' }}
+              >
+                <p className="text-sm">{msg.message}</p>
+                <div className="text-xs text-gray-500 text-right mt-1 select-none">
+                  {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
         <div ref={messagesEndRef} />
       </div>
-      <form onSubmit={sendMessage} style={{ display: 'flex', gap: 8 }}>
+
+      {/* Input Area */}
+      <form
+        onSubmit={sendMessage}
+        className="flex items-center gap-3 px-4 py-3 border-t border-gray-300 bg-gray-100 rounded-b-lg"
+      >
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type a message..."
-          style={{ flexGrow: 1, padding: '8px' }}
+          className="flex-grow rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 px-4 py-2 text-gray-700"
+          autoComplete="off"
         />
-        <button type="submit" disabled={!newMessage.trim()}>
+        <button
+          type="submit"
+          disabled={!newMessage.trim()}
+          className={`rounded-full px-5 py-2 font-semibold text-white transition-colors
+            ${newMessage.trim() ? 'bg-blue-600 hover:bg-blue-700 cursor-pointer' : 'bg-blue-300 cursor-not-allowed'}
+          `}
+        >
           Send
         </button>
       </form>

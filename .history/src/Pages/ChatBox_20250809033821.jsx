@@ -163,42 +163,92 @@ const Chatbox = () => {
   if (error) return <div style={{ color: 'red' }}>{error}</div>;
 
   return (
-    <div style={{ maxWidth: 600, margin: 'auto' }}>
-      <h2>Chat with Admin</h2>
+   <div 
+    className="flex-grow overflow-y-auto  h-screen p-6 bg-gray-50"
+     
+ >
+      {/* Header */}
+      <header className="flex items-center px-6 py-4 bg-white shadow border-b border-gray-300">
+        <img
+          src={adminUser.avatar || 'https://randomuser.me/api/portraits/men/11.jpg'}
+          alt="Admin Avatar"
+          className="w-10 h-10 rounded-full mr-4 object-cover"
+        />
+        <h2 className="text-xl font-semibold text-gray-800">Chat with Admin</h2>
+      </header>
+
+      {/* Messages container */}
       <div
-        style={{
-          height: 300,
-          overflowY: 'auto',
-          border: '1px solid #ddd',
-          padding: 10,
-          marginBottom: 8,
-          backgroundColor: '#f9f9f9',
-        }}
+        className="flex-1 overflow-y-auto p-6 space-y-4 flex flex-col"
+        style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/diamond-upholstery.png")' }}
       >
-        {messages.length === 0 ? (
-          <div>No messages yet</div>
-        ) : (
-          messages.map((msg, i) => (
-            <div key={msg.id || i} style={{ marginBottom: 10 }}>
-              <strong>{msg.sender_name}:</strong> {msg.message}
-              <div style={{ fontSize: 12, color: '#666' }}>
-                {new Date(msg.timestamp).toLocaleTimeString()}
+        {messages.length === 0 && (
+          <div className="text-center text-gray-400 italic mt-10 select-none">No messages yet</div>
+        )}
+
+        {messages.map((msg, i) => {
+          const isCurrentUser = msg.sender_id === currentUser.id;
+          const senderAvatar = isCurrentUser
+            ? currentUser.avatar || 'https://randomuser.me/api/portraits/women/68.jpg'
+            : adminUser.avatar || 'https://randomuser.me/api/portraits/men/11.jpg';
+
+          return (
+            <div
+              key={msg.id || i}
+              className={`flex items-end space-x-3 max-w-3/4 ${
+                isCurrentUser ? 'self-end flex-row-reverse space-x-reverse' : 'self-start'
+              }`}
+            >
+              {/* Avatar */}
+              <img
+                src={senderAvatar}
+                alt={`${msg.sender_name} avatar`}
+                className="w-10 h-10 rounded-full object-cover shadow-md"
+              />
+
+              {/* Message bubble */}
+              <div
+                className={`px-4 py-2 rounded-2xl shadow-md break-words
+                  ${isCurrentUser ? 'bg-blue-600 text-white' : 'bg-white text-gray-900'}
+                `}
+              >
+                <p className="text-sm leading-relaxed">{msg.message}</p>
+                <div className="text-xs mt-1 text-gray-200 text-right select-none">
+                  {new Date(msg.timestamp).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </div>
               </div>
             </div>
-          ))
-        )}
+          );
+        })}
+
         <div ref={messagesEndRef} />
       </div>
-      <form onSubmit={sendMessage} style={{ display: 'flex', gap: 8 }}>
+
+      {/* Input area */}
+      <form
+        onSubmit={sendMessage}
+        className="flex items-center gap-3 p-4 bg-white border-t border-gray-300"
+      >
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type a message..."
-          style={{ flexGrow: 1, padding: '8px' }}
+          className="flex-grow rounded-full border border-gray-300 px-4 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          autoComplete="off"
         />
-        <button type="submit" disabled={!newMessage.trim()}>
-          Send
+        <button
+          type="submit"
+          disabled={!newMessage.trim()}
+          className={`p-2 rounded-full transition-colors ${
+            newMessage.trim() ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-blue-300 cursor-not-allowed'
+          }`}
+          aria-label="Send message"
+        >
+          {/* <PaperPlane className="w-6 h-6 rotate-90" /> */}
         </button>
       </form>
     </div>

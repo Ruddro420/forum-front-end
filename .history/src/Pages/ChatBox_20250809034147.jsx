@@ -8,7 +8,7 @@ const API_URL = 'http://192.168.1.104:8000/api';
 const adminUser = { id: 1, name: 'Admin' };
 
 const Chatbox = () => {
-  const { user } = useAuth();
+  const { user } = useAuth(); // get current user
 
   const currentUser = useMemo(() => {
     if (!user) return null;
@@ -25,6 +25,7 @@ const Chatbox = () => {
   const ablyClientRef = useRef(null);
   const channelRef = useRef(null);
 
+  // Initialize Ably realtime client when currentUser changes
   useEffect(() => {
     if (!currentUser) return;
 
@@ -51,16 +52,20 @@ const Chatbox = () => {
     };
   }, [currentUser]);
 
-  // Load chat history on currentUser change
+  // Load message history when currentUser changes
   useEffect(() => {
     if (!currentUser) return;
 
+    setMessages([]); // clear old messages
+
     const loadMessages = async () => {
       try {
+        // Call your backend API with current_user_id and userId = adminUser.id
         const res = await axios.get(`${API_URL}/chat/messages/${adminUser.id}`, {
           params: { current_user_id: currentUser.id },
         });
 
+        // Add sender_name if missing (fallback)
         const formatted = (res.data || []).map((msg) => ({
           ...msg,
           sender_name: msg.sender_name || 'Unknown',
@@ -77,7 +82,7 @@ const Chatbox = () => {
     loadMessages();
   }, [currentUser]);
 
-  // Subscribe to Ably for real-time messages
+  // Subscribe to Ably channel for realtime updates
   useEffect(() => {
     if (!currentUser || !ablyClientRef.current) return;
 
@@ -92,6 +97,7 @@ const Chatbox = () => {
       const channel = client.channels.get(`chat:user_${currentUser.id}`);
 
       channel.subscribe('message', (msg) => {
+        // Only add message if it's not already in messages (by id or timestamp+msg)
         setMessages((prev) => {
           const exists = prev.some(
             (m) =>
@@ -120,14 +126,14 @@ const Chatbox = () => {
     };
   }, [currentUser]);
 
-  // Scroll to bottom on new messages
+  // Scroll chat to bottom when messages update
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
 
-  // Send message + reload history immediately
+  // Handle sending new message
   const sendMessage = async (e) => {
     e.preventDefault();
     if (!newMessage.trim() || !currentUser) return;
@@ -140,19 +146,7 @@ const Chatbox = () => {
       });
 
       setNewMessage('');
-
-      // Reload history here
-      const res = await axios.get(`${API_URL}/chat/messages/${adminUser.id}`, {
-        params: { current_user_id: currentUser.id },
-      });
-
-      const formatted = (res.data || []).map((msg) => ({
-        ...msg,
-        sender_name: msg.sender_name || 'Unknown',
-        timestamp: msg.timestamp || msg.created_at || new Date().toISOString(),
-      }));
-
-      setMessages(formatted);
+      // Do NOT add message locally here, will be added via Ably realtime subscription
     } catch (err) {
       console.error('Send message error:', err);
       setError('Failed to send message');

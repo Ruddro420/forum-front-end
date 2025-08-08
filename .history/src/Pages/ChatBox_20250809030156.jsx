@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import axios from 'axios';
 import * as Ably from 'ably';
-import { useAuth } from '../Auth/context/AuthContext'; // your auth context
+import { useAuth } from '../Auth/context/AuthContext';
 
 const API_URL = 'http://192.168.1.104:8000/api';
 
-const adminUser = { id: 1, name: 'Admin' };
+const adminUser = { id: 1, name: 'Admin', is_admin: true };
 
 const Chatbox = () => {
   const { user } = useAuth();
@@ -15,21 +15,23 @@ const Chatbox = () => {
     return {
       id: user.id,
       name: `${user.first_name} ${user.last_name}`,
+      is_admin: user.is_admin || false,
     };
   }, [user]);
 
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-  const [error, setError] = useState(null);
-  const messagesEndRef = useRef(null);
-  const ablyClientRef = useRef(null);
+  const [ablyClient, setAblyClient] = useState(null);
   const channelRef = useRef(null);
+  const messagesEndRef = useRef(null);
 
+  // Initialize Ably client on user change
   useEffect(() => {
     if (!currentUser) return;
 
-    if (ablyClientRef.current) {
-      ablyClientRef.current.close();
+    if (ablyClient) {
+      ablyClient.close();
+      setAblyClient(null);
     }
 
     const client = new Ably.Realtime({
@@ -43,74 +45,71 @@ const Chatbox = () => {
       },
     });
 
-    ablyClientRef.current = client;
+    setAblyClient(client);
 
     return () => {
       client.close();
-      ablyClientRef.current = null;
+      setAblyClient(null);
     };
   }, [currentUser]);
 
-  // Load chat history on currentUser change
+  // Load messages and subscribe to channel on ablyClient or user change
   useEffect(() => {
-    if (!currentUser) return;
+    if (!currentUser || !ablyClient) return;
 
+    setMessages([]); // clear old messages
+
+    // Load message history from backend
     const loadMessages = async () => {
       try {
-        const res = await axios.get(`${API_URL}/chat/messages/${adminUser.id}`, {
+        const res = await axios.get(`${API_URL}/chat/messages/${currentUser.id}`, {
           params: { current_user_id: currentUser.id },
         });
-
-        const formatted = (res.data || []).map((msg) => ({
-          ...msg,
-          sender_name: msg.sender_name || 'Unknown',
-          timestamp: msg.timestamp || msg.created_at || new Date().toISOString(),
-        }));
-
-        setMessages(formatted);
+        if (Array.isArray(res.data)) {
+          setMessages(
+            res.data.map((msg) => ({
+              id: msg.id || Math.random(),
+              sender_id: msg.sender_id,
+              receiver_id: msg.receiver_id,
+              message: msg.message,
+              sender_name: msg.sender_name || 'Unknown',
+              timestamp: msg.timestamp || msg.created_at || new Date().toISOString(),
+            }))
+          );
+        }
       } catch (err) {
-        console.error('Load messages error:', err);
-        setError('Failed to load messages');
+        console.error('Failed to load messages:', err);
       }
     };
 
     loadMessages();
-  }, [currentUser]);
 
-  // Subscribe to Ably for real-time messages
-  useEffect(() => {
-    if (!currentUser || !ablyClientRef.current) return;
-
-    const client = ablyClientRef.current;
-
+    // Subscribe to Ably channel
     if (channelRef.current) {
       channelRef.current.unsubscribe();
       channelRef.current = null;
     }
 
-    const subscribe = () => {
-      const channel = client.channels.get(`chat:user_${currentUser.id}`);
+    const channel = ablyClient.channels.get(`chat:user_${currentUser.id}`);
 
-      channel.subscribe('message', (msg) => {
-        setMessages((prev) => {
-          const exists = prev.some(
-            (m) =>
-              m.id === msg.data.id ||
-              (m.timestamp === msg.data.timestamp && m.message === msg.data.message)
-          );
-          if (exists) return prev;
-          return [...prev, { ...msg.data, sender_name: msg.data.sender_name || 'Unknown' }];
-        });
+    const handleMessage = (msg) => {
+      // Append new message if it belongs to this chat (optional filtering)
+      setMessages((prev) => {
+        const exists = prev.some(
+          (m) =>
+            m.id === msg.data.id ||
+            (m.timestamp === msg.data.timestamp &&
+              m.sender_id === msg.data.sender_id &&
+              m.message === msg.data.message)
+        );
+        if (exists) return prev;
+        return [...prev, { ...msg.data, id: msg.data.id || Math.random() }];
       });
-
-      channelRef.current = channel;
     };
 
-    if (client.connection.state === 'connected') {
-      subscribe();
-    } else {
-      client.connection.once('connected', subscribe);
-    }
+    channel.subscribe('message', handleMessage);
+
+    channelRef.current = channel;
 
     return () => {
       if (channelRef.current) {
@@ -118,16 +117,16 @@ const Chatbox = () => {
         channelRef.current = null;
       }
     };
-  }, [currentUser]);
+  }, [currentUser, ablyClient]);
 
-  // Scroll to bottom on new messages
+  // Scroll to bottom on messages update
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
 
-  // Send message + reload history immediately
+  // Send message handler
   const sendMessage = async (e) => {
     e.preventDefault();
     if (!newMessage.trim() || !currentUser) return;
@@ -138,33 +137,19 @@ const Chatbox = () => {
         receiver_id: adminUser.id,
         sender_id: currentUser.id,
       });
-
       setNewMessage('');
-
-      // Reload history here
-      const res = await axios.get(`${API_URL}/chat/messages/${adminUser.id}`, {
-        params: { current_user_id: currentUser.id },
-      });
-
-      const formatted = (res.data || []).map((msg) => ({
-        ...msg,
-        sender_name: msg.sender_name || 'Unknown',
-        timestamp: msg.timestamp || msg.created_at || new Date().toISOString(),
-      }));
-
-      setMessages(formatted);
+      // No need to manually add; will update from Ably subscription
     } catch (err) {
-      console.error('Send message error:', err);
-      setError('Failed to send message');
+      console.error('Failed to send message:', err);
     }
   };
 
   if (!currentUser) return <div>Please log in to chat</div>;
-  if (error) return <div style={{ color: 'red' }}>{error}</div>;
 
   return (
     <div style={{ maxWidth: 600, margin: 'auto' }}>
       <h2>Chat with Admin</h2>
+
       <div
         style={{
           height: 300,
@@ -179,8 +164,10 @@ const Chatbox = () => {
           <div>No messages yet</div>
         ) : (
           messages.map((msg, i) => (
-            <div key={msg.id || i} style={{ marginBottom: 10 }}>
-              <strong>{msg.sender_name}:</strong> {msg.message}
+            <div key={`${msg.id}-${i}`} style={{ marginBottom: 10 }}>
+              <div>
+                <strong>{msg.sender_name}:</strong> {msg.message}
+              </div>
               <div style={{ fontSize: 12, color: '#666' }}>
                 {new Date(msg.timestamp).toLocaleTimeString()}
               </div>
@@ -189,6 +176,7 @@ const Chatbox = () => {
         )}
         <div ref={messagesEndRef} />
       </div>
+
       <form onSubmit={sendMessage} style={{ display: 'flex', gap: 8 }}>
         <input
           type="text"
