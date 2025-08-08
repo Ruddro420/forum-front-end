@@ -81,7 +81,7 @@ const ShopPage = () => {
       </div>
 
       {/* Filters */}
-      {/* <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+      <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
           <div className="flex-1 max-w-md">
             <div className="relative">
@@ -123,7 +123,7 @@ const ShopPage = () => {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Sidebar */}

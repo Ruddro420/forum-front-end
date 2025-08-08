@@ -10,9 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "ably": "^2.10.1",
     "axios": "^1.11.0",
+    "laravel-echo": "^2.2.0",
     "lucide-react": "^0.536.0",
     "prop-types": "^15.8.1",
+    "pusher-js": "^8.4.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hot-toast": "^2.5.2",

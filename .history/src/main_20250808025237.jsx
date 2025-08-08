@@ -38,7 +38,7 @@ const router = createBrowserRouter([
       // { path: "/chat/", element: <ChatInterface /> },
       { path: "/profile", element: <StudentProfile /> },
       { path: "/dashboard", element: <StudentDashboard /> },
-      { path: "/chatbox", element: <ChatBox /> },
+      { path: "/chatbox", element: <ChatBox  authUser={{ id: 1 }} receiverId={2}/> },
 
     ]
   },

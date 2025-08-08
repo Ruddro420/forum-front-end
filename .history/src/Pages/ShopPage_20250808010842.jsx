@@ -29,7 +29,7 @@ const ShopPage = () => {
 
   // Fetch products from API
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_SERVER_API}/data/active/books`) // <-- Replace with your actual endpoint
+    fetch(`${import.meta.env.VITE_SERVER_API}/api/books/active`) // <-- Replace with your actual endpoint
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -81,7 +81,7 @@ const ShopPage = () => {
       </div>
 
       {/* Filters */}
-      {/* <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+      <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
           <div className="flex-1 max-w-md">
             <div className="relative">
@@ -123,7 +123,7 @@ const ShopPage = () => {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Sidebar */}
@@ -198,7 +198,7 @@ const ShopPage = () => {
                 <div key={product.id} className={`bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow ${viewMode === 'list' ? 'flex' : ''}`}>
                   <div className={`relative ${viewMode === 'list' ? 'w-48 flex-shrink-0' : 'aspect-video'}`}>
                     <img
-                      src={`http://192.168.1.104:8000/${product.cover_image}`}
+                      src={`${import.meta.env.VITE_SERVER_API}/storage/${product.cover_image}`}
                       alt={product.name}
                       className="w-full h-full object-cover"
                     />

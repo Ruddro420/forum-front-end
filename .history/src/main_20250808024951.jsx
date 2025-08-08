@@ -35,10 +35,10 @@ const router = createBrowserRouter([
     children: [
       { path: "/ask-question", element: <AskQuestion /> },
       { path: "/question-detail/:id", element: <QuestionDetail /> },
-      // { path: "/chat/", element: <ChatInterface /> },
+      { path: "/chat/", element: <ChatInterface /> },
       { path: "/profile", element: <StudentProfile /> },
       { path: "/dashboard", element: <StudentDashboard /> },
-      { path: "/chatbox", element: <ChatBox /> },
+      { path: "/chat", element: <ChatBox /> },
 
     ]
   },

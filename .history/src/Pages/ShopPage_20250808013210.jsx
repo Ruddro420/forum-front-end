@@ -29,7 +29,7 @@ const ShopPage = () => {
 
   // Fetch products from API
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_SERVER_API}/data/active/books`) // <-- Replace with your actual endpoint
+    fetch(`${import.meta.env.VITE_SERVER_API}/books/active`) // <-- Replace with your actual endpoint
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -81,7 +81,7 @@ const ShopPage = () => {
       </div>
 
       {/* Filters */}
-      {/* <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+      <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
           <div className="flex-1 max-w-md">
             <div className="relative">
@@ -123,7 +123,7 @@ const ShopPage = () => {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Sidebar */}
