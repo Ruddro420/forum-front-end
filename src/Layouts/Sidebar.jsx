@@ -15,18 +15,18 @@ const Sidebar = ({ isOpen, onClose }) => {
   ];
 
   // Convert fetauredTag object to array and limit to 9
- const tagColors = [
-  'bg-yellow-100 text-yellow-800',
-  'bg-blue-100 text-blue-800',
-  'bg-green-100 text-green-800',
-  'bg-purple-100 text-purple-800',
-  'bg-pink-100 text-pink-800',
-];
+  const tagColors = [
+    'bg-yellow-100 text-yellow-800',
+    'bg-blue-100 text-blue-800',
+    'bg-green-100 text-green-800',
+    'bg-purple-100 text-purple-800',
+    'bg-pink-100 text-pink-800',
+  ];
 
   const featuredTags = fetauredTag
     ? Object.entries(fetauredTag)
       .slice(0, 5)
-      .map(([name, count],index) => ({
+      .map(([name, count], index) => ({
         name,
         count,
         color: tagColors[index % tagColors.length], // loop through colors
@@ -90,17 +90,18 @@ const Sidebar = ({ isOpen, onClose }) => {
               {featuredTags.length > 0 ? (
                 featuredTags.map((tag, index) => (
                   <div key={index}>
-                    <a
+                    <Link
+                      to={`/?tag=${tag.name}`}
                       key={index}
-                      href="#"
                       className={`flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors`}>
                       <span
+
                         className={`px-2 py-1 rounded text-xs font-medium ${tag.color}`}
                       >
                         {tag.name?.toUpperCase()}
                       </span>
                       <span className="text-xs text-gray-500">{tag.count}</span>
-                    </a >
+                    </ Link>
                   </div>
                 ))
               ) : (

@@ -1,6 +1,5 @@
 import { ArrowUp, ArrowDown, MessageCircle, Bookmark, Share2, Flag, Clock, Eye, CheckCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import allquestion from '../../public/data/questions.json'
 import { NavLink, useNavigate, useParams } from 'react-router';
 import { format } from 'timeago.js';
 import { useAuth } from '../Auth/context/AuthContext';
@@ -10,14 +9,13 @@ const QuestionDetail = () => {
   const [votes, setVotes] = useState({ upvotes: 0, downvotes: 0 });
 
 
-  const [isBookmarked, setIsBookmarked] = useState(false);
   const [post, setPost] = useState([]);
   const [commentText, setCommentText] = useState('');
   const [commentFile, setCommentFile] = useState(null);
   const [views, setViews] = useState(0);
   // get id 
   const { id } = useParams();
-  const { fetchPost ,fetchTotalData} = useAuth()
+  const { fetchPost, fetchTotalData } = useAuth()
 
   // fetch post data
   const fetchPostByID = async () => {
@@ -289,7 +287,7 @@ const QuestionDetail = () => {
                   {/* <div className="text-sm text-green-600">{question?.author?.reputation?.toLocaleString()}</div> */}
                 </div>
                 <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium">
-                  {post?.student ? post.student.first_name : 'A'}
+                  {post?.student ? post?.student?.first_name.split(' ').map(n => n[0]).join('') : 'A'}
                 </div>
               </div>
             </div>

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import FilterBar from "../components/FilterBar";
 import ActivityFeed from "../components/ActivityFeed";
 import StatsWidget from "../components/StatsWidget";
@@ -9,26 +10,40 @@ const ForumPage = () => {
   const { posts, fetauredTag, categories, user, userPost } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-
-
-  
   const [showposts, setShowposts] = useState(posts);
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const filterTag = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get("tag");
+  }, [location.search]);
+
   useEffect(() => {
-  
-  if(user){
-    setShowposts(userPost);
-  }else{
-    setShowposts(posts);
-  }
+    if (user) {
+      setShowposts(userPost);
+    } else {
+      setShowposts(posts);
+    }
   }, [posts, userPost, user]);
 
   const postsPerPage = 4;
 
-  // 👉 Filter posts by selected category
-  const filteredPosts = selectedCategoryId
-    ? showposts.filter(post => post.category_id === selectedCategoryId)
-    : showposts;
+  // Filter posts
+  const filteredPosts = useMemo(() => {
+    if (selectedCategoryId) {
+      return showposts.filter(post => post.category_id === selectedCategoryId);
+    }
+    if (filterTag) {
+      return showposts.filter(
+        post =>
+          post.tag &&
+          post.tag.split(",").map(t => t.trim()).includes(filterTag)
+      );
+    }
+    return showposts;
+  }, [showposts, selectedCategoryId, filterTag]);
 
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
   const paginatedPosts = filteredPosts.slice(
@@ -103,7 +118,16 @@ const ForumPage = () => {
                   tags.map((tag) => (
                     <span
                       key={tag}
-                      className="px-3 py-1 bg-blue-100 text-blue-800 rounded-lg text-sm font-medium cursor-pointer hover:bg-blue-200 transition-colors"
+                      onClick={() => {
+                        navigate(`/?tag=${tag}`);
+                        setSelectedCategoryId(null);
+                        setCurrentPage(1);
+                      }}
+                      className={`px-3 py-1 rounded-lg text-sm font-medium cursor-pointer transition-colors ${
+                        filterTag === tag
+                          ? "bg-blue-600 text-white"
+                          : "bg-blue-100 text-blue-800 hover:bg-blue-200"
+                      }`}
                     >
                       {tag}
                     </span>
@@ -119,6 +143,5 @@ const ForumPage = () => {
     </>
   );
 };
-
 
 export default ForumPage;

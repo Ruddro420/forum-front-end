@@ -23,8 +23,9 @@ const Header = ({ onMenuToggle, isMenuOpen }) => {
             >
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
-            <div className="flex items-center ml-2 lg:ml-0">
+            <div onClick={() => navigate("/")} className="flex items-center ml-2 lg:ml-0 cursor-pointer">
               <MessageSquare className="h-8 w-8 text-blue-600" />
+
               <span className="ml-2 text-xl font-bold text-gray-900">Edunika</span>
             </div>
           </div>
@@ -57,7 +58,7 @@ const Header = ({ onMenuToggle, isMenuOpen }) => {
             </button>
               :
               <button onClick={() => navigate("/login")} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center">
-                <LogIn className="h-4 w-4 mr-2"/>
+                <LogIn className="h-4 w-4 mr-2" />
                 <span className="hidden sm:inline">Login</span>
               </button>}
 

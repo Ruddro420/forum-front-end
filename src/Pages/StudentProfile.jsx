@@ -1,26 +1,48 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import { MapPin, Calendar, Link as LinkIcon, Award, MessageSquare, Eye, Star, Edit, Settings, Mail, Github, Twitter } from 'lucide-react';
 import profileData from '../../public/data/ProfileData/profileData.json';
 import { useAuth } from '../Auth/context/AuthContext';
-import { NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router';
+import Loader from '../components/Loader';
 const StudentProfile = () => {
-    // const [activeTab, setActiveTab] = useState('overview');
+    const [activeTab, setActiveTab] = useState('questions');
     const { user, logout } = useAuth();
-    console.log(user);
+    // console.log(user);
 
 
     const profile = profileData;
 
-    // const recentActivity = profileData?.recentActivity;
 
-    // const tabs = [
-    //     { id: 'overview', label: 'Overview' },
-    //     { id: 'questions', label: 'Questions', count: profile.stats.questions },
-    //     { id: 'answers', label: 'Answers', count: profile.stats.answers },
-    //     { id: 'tags', label: 'Tags' },
-    //     { id: 'badges', label: 'Badges' },
-    //     { id: 'activity', label: 'Activity' }
-    // ];
+
+    const [recentQuestions, setRecentQuestions] = useState([])
+    const [loading, setLoading] = useState(true);
+    // load statistics data
+    const fetchTotalData = async () => {
+        //   const userId = sessionStorage.getItem("userId");
+        try {
+            const res = await fetch(`${import.meta.env.VITE_SERVER_API}/posts/student/${user?.id}`);
+            // console.log("respose of me",res);
+            if (!res.ok) throw new Error("Failed to fetch user");
+            const data = await res.json();
+            console.log(data);
+            setRecentQuestions(data.data);
+        } catch (error) {
+            console.error("Fetch user error:", error);
+            // setUser(null);
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
+        fetchTotalData();
+    }, [user?.id]);
+    // console.log(recentQuestions);
+    const tabs = [
+        // { id: 'overview', label: 'Overview' },
+        { id: 'questions', label: 'Questions', count: recentQuestions.length },
+        { id: 'tags', label: 'Tags' },
+    ];
 
     return (
         <div className="mx-auto px-4 py-8">
@@ -103,12 +125,12 @@ const StudentProfile = () => {
                                 <div className="text-sm text-gray-500">Reputation</div>
                             </div> */}
                             <div className="text-center border p-5 shadow-sm">
-                                <div className="text-2xl font-bold text-gray-900">{profile.stats.questions}</div>
-                                <div className="text-sm text-gray-500">Questions</div>
+                                <div className="text-2xl font-bold text-gray-900">{recentQuestions.length}</div>
+                                <div className="text-sm text-gray-500">Total Questions</div>
                             </div>
                             <div className="text-center border p-5 shadow-sm">
-                                <div className="text-2xl font-bold text-gray-900">{profile.stats.answers}</div>
-                                <div className="text-sm text-gray-500">Answers</div>
+                                <div className="text-2xl font-bold text-gray-900">{recentQuestions.filter(post => post.status == 0).length}</div>
+                                <div className="text-sm text-gray-500">Pending Questions</div>
                             </div>
                             <div className="text-center border p-5 shadow-sm">
                                 <div className="text-2xl font-bold text-gray-900">{profile.stats.views.toLocaleString()}</div>
@@ -128,7 +150,7 @@ const StudentProfile = () => {
             </div>
 
             {/* Tabs */}
-            {/* <div className="bg-white rounded-lg border border-gray-200 mb-8">
+            <div className="bg-white rounded-lg border border-gray-200 mb-8">
                 <div className="border-b border-gray-200">
                     <nav className="flex space-x-8 px-8">
                         {tabs.map((tab) => (
@@ -151,79 +173,83 @@ const StudentProfile = () => {
                     </nav>
                 </div>
                 <div className="p-8">
-                    {activeTab === 'overview' && (
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                           
-                            <div>
-                                <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Tags</h3>
-                                <div className="space-y-3">
-                                    {profile.topTags.map((tag) => (
-                                        <div key={tag.name} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                            <div className="flex items-center">
-                                                <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm font-medium">
-                                                    {tag.name}
-                                                </span>
-                                                <span className="ml-3 text-sm text-gray-600">
-                                                    {tag.posts} posts
+                    {activeTab === 'questions' && (
+                        <div className="">
+
+                            <div className='flex flex-col gap-6'>
+
+                                {!loading ? recentQuestions.length > 0 ? (
+                                    recentQuestions.map((question) => (
+                                        <div key={question.id} className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                                            <div className="flex items-start justify-between mb-2">
+                                                <Link to={`/question-detail/${question.id}`} className="font-medium text-gray-900 hover:text-blue-600 cursor-pointer">
+                                                    {question.title}
+                                                </Link>
+                                                <span className={`px-2 py-1 rounded text-xs font-medium ${question.status === 'answered'
+                                                    ? 'bg-green-100 text-green-800'
+                                                    : 'bg-yellow-100 text-yellow-800'
+                                                    }`}>
+                                                    {question.status}
                                                 </span>
                                             </div>
-                                            <div className="text-lg font-semibold text-gray-900">
-                                                {tag.score}
+                                            <div className="text-sm text-gray-500 mb-1">
+                                                <span>Class: {question.category?.name}</span>{' | '}
+                                                {question.sub_category && <span>Group: {question.sub_category?.name}</span>}
                                             </div>
+                                            {/* <div className="text-sm text-gray-500 mb-1">
+                                                <span>Asked by: {question.student?.first_name} {question.student?.last_name}</span>
+                                            </div> */}
+                                            <div className="text-sm text-gray-500 mb-1">
+                                                <span>Date: {new Date(question.created_at).toLocaleString()}</span>
+                                            </div>
+                                            {question.tag && (
+                                                <div className="mt-2 text-xs text-blue-600">Tags: {question.tag}</div>
+                                            )}
                                         </div>
-                                    ))}
-                                </div>
+                                    ))
+                                ) : (
+                                    <p>No recent questions found.</p>
+                                ) : <Loader />}
                             </div>
 
-                          
-                            <div>
-                                <h3 className="text-lg font-semibold text-gray-900 mb-4">Badges</h3>
-                                <div className="space-y-3">
-                                    {profile.badges.map((badge, index) => (
-                                        <div key={index} className="flex items-center p-3 bg-gray-50 rounded-lg">
-                                            <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 ${badge.type === 'gold' ? 'bg-yellow-100' :
-                                                badge.type === 'silver' ? 'bg-gray-100' : 'bg-orange-100'
-                                                }`}>
-                                                <Award className={`h-4 w-4 ${badge.type === 'gold' ? 'text-yellow-600' :
-                                                    badge.type === 'silver' ? 'text-gray-600' : 'text-orange-600'
-                                                    }`} />
-                                            </div>
-                                            <div className="flex-1">
-                                                <div className="font-medium text-gray-900">{badge.name}</div>
-                                                <div className="text-sm text-gray-500">{badge.count} earned</div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
                         </div>
                     )}
 
-                    {activeTab === 'activity' && (
+                    {activeTab === 'tags' && (
                         <div>
-                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
-                            <div className="space-y-4">
-                                {recentActivity.map((activity, index) => (
-                                    <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                                        <div className="flex items-center">
-                                            <div className={`p-2 rounded-lg mr-3 ${activity.type === 'answer' ? 'bg-green-100' : 'bg-blue-100'
-                                                }`}>
-                                                <MessageSquare className={`h-4 w-4 ${activity.type === 'answer' ? 'text-green-600' : 'text-blue-600'
-                                                    }`} />
-                                            </div>
-                                            <div>
-                                                <div className="font-medium text-gray-900">{activity.title}</div>
-                                                <div className="text-sm text-gray-500">{activity.timeAgo}</div>
-                                            </div>
-                                        </div>
-                                        <div className="text-green-600 font-medium">{activity.points}</div>
-                                    </div>
-                                ))}
+                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Used Tags</h3>
+                            <div className="flex flex-wrap gap-2">
+                                {/* Filter all used tags from the all questions of recentQuestions and show them here here. and dont show duplicates if any tag has duplicates then show them as a number beside the tag */}
+                                {recentQuestions.length > 0 ? (
+                                    Object.entries(
+                                        recentQuestions.reduce((acc, question) => {
+                                            if (question.tag) {
+                                                const tags = question.tag.split(',').map(tag => tag.trim());
+                                                tags.forEach(tag => {
+                                                    acc[tag] = (acc[tag] || 0) + 1;
+                                                });
+                                            }
+                                            return acc;
+                                        }, {})
+                                    ).map(([tag, count]) => (
+                                        <Link to={`/?tag=${tag}`}
+                                            key={tag}
+                                            className={`inline-block bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full ${tag == " " ? "hidden" : ""}`}
+                                        >
+                                            {tag} {count > 1 && `(${count})`}
+                                        </Link>
+                                    ))
+                                ) : (
+                                    <p>No tags found.</p>
+                                )}
+
+
+
                             </div>
                         </div>
                     )}
                 </div>
-            </div> */}
+            </div>
         </div>
     );
 };
