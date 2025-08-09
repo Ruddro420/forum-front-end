@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { ArrowUp, ArrowDown, MessageCircle, Bookmark, Share2, Flag, Clock, Eye, CheckCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router';
