@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { MapPin, Calendar, Link as LinkIcon, Award, MessageSquare, Eye, Star, Edit, Settings, Mail, Github, Twitter } from 'lucide-react';
-// import profileData from '../../public/data/ProfileData/profileData.json';
+import profileData from '../../public/data/ProfileData/profileData.json';
 import { useAuth } from '../Auth/context/AuthContext';
 import { Link, NavLink } from 'react-router';
 import Loader from '../components/Loader';
@@ -11,7 +11,7 @@ const StudentProfile = () => {
     // console.log(user);
 
 
-    // const profile = profileData;
+    const profile = profileData;
 
 
 
