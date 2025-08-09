@@ -4,7 +4,7 @@ import * as Ably from 'ably';
 import { useAuth } from '../Auth/context/AuthContext';
 import { Send, Smile, Paperclip, Mic } from 'lucide-react';
 
-const API_URL = import.meta.env.VITE_SERVER_API;
+const API_URL = 'http://192.168.1.104:8000/api';
 const adminUser = { id: 1, name: 'Admin', avatar: '/admin-avatar.jpg' };
 
 const Chatbox = () => {
@@ -95,7 +95,7 @@ const Chatbox = () => {
   };
 
   if (!currentUser) return <div className="flex items-center justify-center h-screen">Please log in to chat</div>;
-  if (error) return <div className="flex items-center justify-center h-screen text-red-500">{error}</div>;
+  if (error) return setMessages(null);//<div className="flex items-center justify-center h-screen text-red-500">{error}</div>
 
   return (
     <div className="flex flex-col h-[90vh] bg-gray-50">

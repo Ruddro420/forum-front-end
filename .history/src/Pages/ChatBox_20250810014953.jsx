@@ -95,7 +95,7 @@ const Chatbox = () => {
   };
 
   if (!currentUser) return <div className="flex items-center justify-center h-screen">Please log in to chat</div>;
-  if (error) return <div className="flex items-center justify-center h-screen text-red-500">{error}</div>;
+  if (error) return setMessages(null);//<div className="flex items-center justify-center h-screen text-red-500">{error}</div>
 
   return (
     <div className="flex flex-col h-[90vh] bg-gray-50">
