@@ -250,7 +250,10 @@ const QuestionDetail = () => {
             {/* Content */}
             <div className="prose max-w-none mb-6">
               <div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
-                {post.details}
+                <div
+                  dangerouslySetInnerHTML={{ __html: post.details }}
+                ></div>
+
               </div>
             </div>
 

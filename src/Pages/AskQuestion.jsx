@@ -5,7 +5,7 @@ import AddQuestionSidebar from "../components/Question/AddQuestionSidebar";
 import { useAuth } from "../Auth/context/AuthContext";
 import axios from "axios";
 import toast from "react-hot-toast";
-
+import RichTextEditor from "../components/RichTextEditor";
 const AskQuestion = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -13,7 +13,7 @@ const AskQuestion = () => {
   const [currentTag, setCurrentTag] = useState("");
   const [loading, setLoading] = useState(false);
   // get user
-  const { user ,fetchPost ,fetchTotalData, fetchUserPost} = useAuth()
+  const { user, fetchPost, fetchTotalData, fetchUserPost } = useAuth()
 
   const addTag = (tag) => {
     if (tag && !tags.includes(tag) && tags.length < 5) {
@@ -138,21 +138,27 @@ const AskQuestion = () => {
                 >
                   Question Details *
                 </label>
-                <textarea
+
+                {/* <ReactQuill theme="snow" value={content} onChange={setContent} /> */}
+
+                <RichTextEditor value={content} onChange={setContent} />
+
+
+                {/* <textarea
                   id="content"
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   placeholder="Provide all the details someone would need to answer your question. Include any code, error messages, or steps you've already tried."
                   rows={12}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                />
+                /> */}
 
               </div>
 
               {/* Tags */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Tags (up to 5)
+                  Subjects (up to 5)
                 </label>
 
                 {/* Current Tags */}
@@ -182,7 +188,7 @@ const AskQuestion = () => {
                   value={currentTag}
                   onChange={(e) => setCurrentTag(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Add tags (press Enter to add)"
+                  placeholder="Add subjects (press Enter to add)"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   disabled={tags.length >= 5}
                 />

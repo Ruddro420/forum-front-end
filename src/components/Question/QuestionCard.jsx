@@ -176,7 +176,10 @@ const QuestionCard = ({ question }) => {
           </div>
 
           <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-            {details}
+            <div
+                  dangerouslySetInnerHTML={{ __html:details }}
+                ></div>
+            {/* {details} */}
           </p>
 
           {/* Tags */}

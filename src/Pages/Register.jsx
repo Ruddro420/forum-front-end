@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Mail, Lock, User, Eye, EyeOff, MessageSquare, ArrowRight, Github, ToggleLeft as Google, Check, School, LayoutPanelTop, Shapes } from 'lucide-react';
@@ -9,9 +10,9 @@ const Register = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    class: '',
+    institute: '',
+    selected_class: '',
     group: '',
-    institute_type: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -22,7 +23,9 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [classData, setClassData] = useState([]);
+  const [instuteData, setinstuteData] = useState([]);
+  const [isGroup, setIsGroup] = useState(false);
+  const [isClass, setIsClass] = useState(true);
   const VITE_SERVER_API = import.meta.env.VITE_SERVER_API;
   const AuthEmail = "user@gmail.com";
   const AuthPassword = "user";
@@ -31,7 +34,7 @@ const Register = () => {
 
   const fetchcategory = () => {
     axios.get(`${VITE_SERVER_API}/category`)
-      .then(res => setClassData(res.data))
+      .then(res => setinstuteData(res.data))
       .catch(error => console.error(error));
   }
 
@@ -63,9 +66,9 @@ const Register = () => {
       first_name: formData.firstName,
       last_name: formData.lastName,
       email: formData.email,
-      category_id: formData?.class,
-      sub_category_id: formData.group,
-      institute_type: formData.institute_type,
+      category_id: formData?.institute,
+      sub_category_id: formData.selected_class,
+      institute_type: formData.group,
       password: formData.password
     };
     // console.log(registerPayload);
@@ -99,7 +102,26 @@ const Register = () => {
   const strengthLabels = ['Weak', 'Fair', 'Good', 'Strong'];
   const strengthColors = ['bg-red-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500'];
 
-  const selectedClass = classData?.find(item => item.id === parseInt(formData?.class));
+  const selectedInstitute = instuteData?.find(item => item.id === parseInt(formData?.institute));
+
+  /* useEffect(() => {
+    if (selectedInstitute && ["Job Preparation", "Admission", "Others"].includes(selectedInstitute?.name)) {
+      setIsClass(false);
+    } else {
+      setIsClass(true);
+    }
+  }, [selectedInstitute]); */
+
+
+  const selectedClass = selectedInstitute?.subcategories?.find(item => item.id === parseInt(formData?.selected_class));
+
+  useEffect(() => {
+    if (selectedClass && ["Class 9", "Class 10", "Class 11", "Class 12"].includes(selectedClass.name)) {
+      setIsGroup(true);
+    } else {
+      setIsGroup(false);
+    }
+  }, [selectedClass]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 flex items-center justify-center px-4 py-8">
@@ -156,9 +178,9 @@ const Register = () => {
             </div>
 
             {/* Category and sub Category */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className={`grid ${isClass?"grid-cols-2":"grid-cols-1"}  gap-4`}>
               <div>
-                <label htmlFor="class" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="institute" className="block text-sm font-medium text-gray-700 mb-2">
                   Institute Type
                 </label>
                 <div className="relative">
@@ -168,63 +190,66 @@ const Register = () => {
                   <select
                     className='className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all'
                     required
-                    name="class"
-                    id="class"
-                    value={formData.class}
+                    name="institute"
+                    id="institute"
+                    value={formData.institute}
                     onChange={handleInputChange}
                   >
                     <option value="">Institute Type</option>
-                    {classData?.map((item) => (
+                    {instuteData?.map((item) => (
                       <option key={item.id} value={item?.id}>{item.name}</option>
                     ))}
                   </select>
 
                 </div>
               </div>
-              <div >
-                <label htmlFor="group" className="block text-sm font-medium text-gray-700 mb-2">
-                  Class
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Shapes className="h-5 w-5 text-gray-400" />
+              {isClass && (
+                <div >
+                  <label htmlFor="selected_class" className="block text-sm font-medium text-gray-700 mb-2">
+                    Class
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Shapes className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <select
+                      className='className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all'
+                      required
+                      name="selected_class"
+                      id="selected_class"
+                      value={formData.selected_class}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select Class</option>
+                      {selectedInstitute?.subcategories?.map((item) => (
+                        <option key={item.id} value={item.id}>{item.name}</option>
+                      ))}
+                    </select>
+
                   </div>
-                  <select
-                    className='className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all'
-                    required
-                    name="group"
-                    id="group"
-                    value={formData.group}
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Select Class</option>
-                    {selectedClass?.subcategories?.map((item) => (
-                      <option key={item.id} value={item.id}>{item.name}</option>
-                    ))}
-                  </select>
-
                 </div>
-              </div>
+              )}
 
-              {/* Type of Institute */}
+            </div>
+            {/* Type of Institute */}
+            {isGroup && (
               <div>
-                <label htmlFor="institute_type" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="group" className="block text-sm font-medium text-gray-700 mb-2">
                   Group
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <School className="h-5 w-5 text-gray-400" />
                   </div>
-                  <select className='className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all' required name="institute_type" id="institute_type" value={formData.institute_type} onChange={handleInputChange}>
+                  <select className='className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all' required name="group" id="group" value={formData.group} onChange={handleInputChange}>
                     <option value="">Select Group</option>
-                    <option value="general">Science</option>
-                    <option value="vocational">Arts</option>
-                    <option value="madrasha">Commerce</option>
+                    <option value="Science">Science</option>
+                    <option value="Arts">Arts</option>
+                    <option value="Commerce">Commerce</option>
                   </select>
                 </div>
               </div>
-            </div>
-
+            )}
             {/* Email */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">

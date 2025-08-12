@@ -1,0 +1,528 @@
+{
+    "Praimary": {
+        "Class 1": [
+            "Bangla",
+            "English",
+            "Mathematics",
+            "Science",
+            "Bangladesh and Global Studies",
+            "Religion and Moral Education",
+            "Physical Education and Health",
+            "Arts and Crafts",
+            "Music"
+        ],
+        "Class 2": [
+            "Bangla",
+            "English",
+            "Mathematics",
+            "Science",
+            "Bangladesh and Global Studies",
+            "Religion and Moral Education",
+            "Physical Education and Health",
+            "Arts and Crafts",
+            "Music"
+        ],
+        "Class 3": [
+            "Bangla",
+            "English",
+            "Mathematics",
+            "Science",
+            "Bangladesh and Global Studies",
+            "Religion and Moral Education",
+            "Physical Education and Health",
+            "Arts and Crafts",
+            "Music"
+        ],
+        "Class 4": [
+            "Bangla",
+            "English",
+            "Mathematics",
+            "Science",
+            "Bangladesh and Global Studies",
+            "Religion and Moral Education",
+            "Physical Education and Health",
+            "Arts and Crafts",
+            "Music"
+        ],
+        "Class 5": [
+            "Bangla",
+            "English",
+            "Mathematics",
+            "Science",
+            "Bangladesh and Global Studies",
+            "Religion and Moral Education",
+            "Physical Education and Health",
+            "Arts and Crafts",
+            "Music"
+        ]
+    },
+    "Ibtedai": {
+        "Class 1": [
+            "Bangla",
+            "English",
+            "General Knowledge",
+            "Mathematics",
+            "Quran Majeed",
+            "Arabic Language",
+            "Fiqh & Aqeedah",
+            "Science"
+        ],
+        "Class 2": [
+            "Bangla",
+            "English",
+            "General Knowledge",
+            "Mathematics",
+            "Quran Majeed",
+            "Arabic Language",
+            "Fiqh & Aqeedah",
+            "Science"
+        ],
+        "Class 3": [
+            "Bangla",
+            "English",
+            "General Knowledge",
+            "Mathematics",
+            "Quran Majeed",
+            "Arabic Language",
+            "Fiqh & Aqeedah",
+            "Science",
+            "Social Studies"
+        ],
+        "Class 4": [
+            "Bangla",
+            "English",
+            "General Knowledge",
+            "Mathematics",
+            "Quran Majeed",
+            "Arabic Language",
+            "Fiqh & Aqeedah",
+            "Science",
+            "Social Studies"
+        ],
+        "Class 5": [
+            "Bangla",
+            "English",
+            "General Knowledge",
+            "Mathematics",
+            "Quran Majeed",
+            "Arabic Language",
+            "Fiqh & Aqeedah",
+            "Science",
+            "Social Studies"
+        ]
+    },
+    "School": {
+        "Class 6": [
+            "Bangla",
+            "English",
+            "Mathematics",
+            "Science",
+            "Social Studies",
+            "Islamic Studies",
+            "Arabic Language",
+            "Computer Science"
+        ],
+        "Class 7": [
+            "Bangla",
+            "English",
+            "Mathematics",
+            "Science",
+            "Social Studies",
+            "Islamic Studies",
+            "Arabic Language",
+            "Computer Science"
+        ],
+        "Class 8": [
+            "Bangla",
+            "English",
+            "Mathematics",
+            "Science",
+            "Social Studies",
+            "Islamic Studies",
+            "Arabic Language",
+            "Computer Science"
+        ],
+        "School": {
+            "Class 6": [
+                "Bangla",
+                "English",
+                "Mathematics",
+                "Science",
+                "Social Studies",
+                "Islamic Studies",
+                "Arabic Language",
+                "Computer Science"
+            ],
+            "Class 7": [
+                "Bangla",
+                "English",
+                "Mathematics",
+                "Science",
+                "Social Studies",
+                "Islamic Studies",
+                "Arabic Language",
+                "Computer Science"
+            ],
+            "Class 8": [
+                "Bangla",
+                "English",
+                "Mathematics",
+                "Science",
+                "Social Studies",
+                "Islamic Studies",
+                "Arabic Language",
+                "Computer Science"
+            ],
+            "Class 9": {
+                "Science": [
+                    "Bangla",
+                    "English",
+                    "Mathematics",
+                    "Physics",
+                    "Chemistry",
+                    "Biology",
+                    "Social Studies",
+                    "Islamic Studies",
+                    "Computer Science"
+                ],
+                "Arts": [
+                    "Bangla",
+                    "English",
+                    "History",
+                    "Geography",
+                    "Political Science",
+                    "Economics",
+                    "Islamic Studies",
+                    "Sociology",
+                    "Arts (Optional)"
+                ],
+                "Commerce": [
+                    "Bangla",
+                    "English",
+                    "Accounting",
+                    "Business Studies",
+                    "Economics",
+                    "Mathematics",
+                    "Finance",
+                    "Management"
+                ]
+            },
+            "Class 10": {
+                "Science": [
+                    "Bangla",
+                    "English",
+                    "Mathematics",
+                    "Physics",
+                    "Chemistry",
+                    "Biology",
+                    "Social Studies",
+                    "Islamic Studies",
+                    "Computer Science"
+                ],
+                "Arts": [
+                    "Bangla",
+                    "English",
+                    "History",
+                    "Geography",
+                    "Political Science",
+                    "Economics",
+                    "Islamic Studies",
+                    "Sociology",
+                    "Arts (Optional)"
+                ],
+                "Commerce": [
+                    "Bangla",
+                    "English",
+                    "Accounting",
+                    "Business Studies",
+                    "Economics",
+                    "Mathematics",
+                    "Finance",
+                    "Management"
+                ]
+            }
+        }
+    },
+    "Madrasha": {
+        "Class 6": [
+            "Bangla",
+            "English",
+            "Mathematics",
+            "Quran Majeed",
+            "Arabic Language",
+            "Fiqh & Aqeedah",
+            "Science",
+            "Social Studies"
+        ],
+        "Class 7": [
+            "Bangla",
+            "English",
+            "Mathematics",
+            "Quran Majeed",
+            "Arabic Language",
+            "Fiqh & Aqeedah",
+            "Science",
+            "Social Studies"
+        ],
+        "Class 8": [
+            "Bangla",
+            "English",
+            "Mathematics",
+            "Quran Majeed",
+            "Arabic Language",
+            "Fiqh & Aqeedah",
+            "Science",
+            "Social Studies"
+        ],
+        "Class 9": [
+            "Bangla",
+            "English",
+            "Mathematics",
+            "Physics",
+            "Chemistry",
+            "Biology",
+            "Quran Majeed",
+            "Arabic Language",
+            "Fiqh & Aqeedah",
+            "Social Studies"
+        ],
+        "Class 10": [
+            "Bangla",
+            "English",
+            "Mathematics",
+            "Physics",
+            "Chemistry",
+            "Biology",
+            "Quran Majeed",
+            "Arabic Language",
+            "Fiqh & Aqeedah",
+            "Social Studies"
+        ]
+    },
+    "College": {
+        "Science": [
+            "Bangla",
+            "English",
+            "Physics",
+            "Chemistry",
+            "Biology",
+            "Mathematics",
+            "Computer Science",
+            "Social Studies"
+        ],
+        "Arts": [
+            "Bangla",
+            "English",
+            "History",
+            "Geography",
+            "Political Science",
+            "Economics",
+            "Islamic Studies",
+            "Sociology",
+            "Psychology",
+            "Arts (Optional)"
+        ],
+        "Commerce": [
+            "Bangla",
+            "English",
+            "Accounting",
+            "Business Studies",
+            "Economics",
+            "Mathematics",
+            "Finance",
+            "Management"
+        ]
+    },
+    "Alim": {
+        "Science": [
+            "Bangla",
+            "English",
+            "Physics",
+            "Chemistry",
+            "Biology",
+            "Quran Majeed",
+            "Arabic Language",
+            "Fiqh & Aqeedah",
+            "Social Studies"
+        ],
+        "Arts": [
+            "Bangla",
+            "English",
+            "Arabic Language",
+            "Islamic Studies",
+            "History",
+            "Geography",
+            "Sociology",
+            "Fiqh & Aqeedah",
+            "Social Studies"
+        ],
+        "Commerce": [
+            "Bangla",
+            "English",
+            "Accounting",
+            "Business Studies",
+            "Economics",
+            "Islamic Studies",
+            "Finance",
+            "Fiqh & Aqeedah",
+            "Social Studies"
+        ]
+    },
+    "Technical School and College": {
+        "Civil Engineering": [
+            "Construction Technology",
+            "Surveying",
+            "Building Materials",
+            "Structural Engineering",
+            "Highway Engineering",
+            "Environmental Engineering"
+        ],
+        "Mechanical Engineering": [
+            "Thermodynamics",
+            "Fluid Mechanics",
+            "Manufacturing Processes",
+            "Machine Design",
+            "Engineering Drawing",
+            "Thermal Systems"
+        ],
+        "Electrical Engineering": [
+            "Circuit Theory",
+            "Electrical Machines",
+            "Power Systems",
+            "Control Systems",
+            "Electrical Measurements",
+            "Digital Electronics"
+        ],
+        "Electronics Engineering": [
+            "Digital Electronics",
+            "Microprocessors",
+            "Communication Systems",
+            "Signal Processing",
+            "Analog Electronics",
+            "Electronic Circuit Design"
+        ],
+        "Computer Science and Engineering": [
+            "Programming Languages",
+            "Data Structures",
+            "Database Management Systems",
+            "Web Development",
+            "Operating Systems",
+            "Software Engineering"
+        ],
+        "Automobile Engineering": [
+            "Vehicle Maintenance",
+            "Automobile Mechanics",
+            "Engine Design",
+            "Automotive Electronics",
+            "Automotive Transmission",
+            "Vehicle Dynamics"
+        ],
+        "Chemical Engineering": [
+            "Process Engineering",
+            "Industrial Chemistry",
+            "Heat and Mass Transfer",
+            "Environmental Engineering",
+            "Fluid Dynamics",
+            "Chemical Process Control"
+        ],
+        "Architecture": [
+            "Building Design",
+            "Structural Drafting",
+            "Construction Management",
+            "Urban Planning",
+            "Interior Design",
+            "Landscape Architecture"
+        ],
+        "Textile Engineering": [
+            "Fabric Manufacturing",
+            "Textile Machinery",
+            "Dyeing and Printing",
+            "Textile Design",
+            "Textile Testing",
+            "Garment Production Technology"
+        ],
+        "Agricultural Engineering": [
+            "Irrigation Systems",
+            "Agricultural Machinery",
+            "Soil Science",
+            "Crop Production Technology",
+            "Water Management",
+            "Agricultural Waste Management"
+        ],
+        "Information Technology": [
+            "Network Administration",
+            "Software Development",
+            "Cybersecurity",
+            "Hardware Maintenance",
+            "Database Management",
+            "Web Design"
+        ],
+        "Marine Engineering": [
+            "Shipbuilding",
+            "Marine Navigation",
+            "Marine Diesel Engine",
+            "Ship Maintenance",
+            "Naval Architecture",
+            "Marine Safety Systems"
+        ],
+        "Fashion Designing": [
+            "Pattern Making",
+            "Garment Construction",
+            "Textile Science",
+            "Fashion Illustration",
+            "Fashion Marketing",
+            "Clothing Technology"
+        ],
+        "Hospitality Management": [
+            "Food & Beverage Management",
+            "Hotel Operations",
+            "Tourism Management",
+            "Event Planning",
+            "Hospitality Marketing",
+            "Front Office Management"
+        ],
+        "Pharmacy": [
+            "Pharmaceutical Chemistry",
+            "Pharmacology",
+            "Drug Manufacturing",
+            "Clinical Pharmacy",
+            "Medicinal Chemistry",
+            "Pharmaceutical Technology"
+        ],
+        "Environmental Engineering": [
+            "Wastewater Treatment",
+            "Solid Waste Management",
+            "Air Pollution Control",
+            "Environmental Impact Assessment",
+            "Water Resources Engineering",
+            "Sustainable Development"
+        ],
+        "Business Administration": [
+            "Marketing Management",
+            "Human Resource Management",
+            "Financial Accounting",
+            "Business Law",
+            "Organizational Behavior",
+            "Project Management"
+        ],
+        "Accountancy": [
+            "Financial Accounting",
+            "Cost Accounting",
+            "Management Accounting",
+            "Auditing",
+            "Taxation",
+            "Accounting Information Systems"
+        ],
+        "Culinary Arts": [
+            "Cooking Techniques",
+            "Food Safety",
+            "Restaurant Management",
+            "Baking and Pastry",
+            "Food Plating",
+            "Culinary Arts Techniques"
+        ]
+    },
+    "University": {},
+    "Freelancer": {},
+    "Job Preparation": {}
+}
