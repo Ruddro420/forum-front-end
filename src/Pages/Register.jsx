@@ -154,28 +154,12 @@ const Register = () => {
                 />
               </div>
             </div>
-            {/* Type of Institute */}
-            <div>
-              <label htmlFor="institute_type" className="block text-sm font-medium text-gray-700 mb-2">
-                Institute type
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <School className="h-5 w-5 text-gray-400" />
-                </div>
-                <select className='className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all' required name="institute_type" id="institute_type" value={formData.institute_type} onChange={handleInputChange}>
-                  <option value="">Institute Type</option>
-                  <option value="general">General</option>
-                  <option value="vocational">Vocational</option>
-                  <option value="madrasha">Madrasha</option>
-                </select>
-              </div>
-            </div>
+
             {/* Category and sub Category */}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label htmlFor="class" className="block text-sm font-medium text-gray-700 mb-2">
-                  Class
+                  Institute Type
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -189,7 +173,7 @@ const Register = () => {
                     value={formData.class}
                     onChange={handleInputChange}
                   >
-                    <option value="">Select Class</option>
+                    <option value="">Institute Type</option>
                     {classData?.map((item) => (
                       <option key={item.id} value={item?.id}>{item.name}</option>
                     ))}
@@ -198,8 +182,8 @@ const Register = () => {
                 </div>
               </div>
               <div >
-                <label htmlFor="class" className="block text-sm font-medium text-gray-700 mb-2">
-                  Group
+                <label htmlFor="group" className="block text-sm font-medium text-gray-700 mb-2">
+                  Class
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -213,12 +197,30 @@ const Register = () => {
                     value={formData.group}
                     onChange={handleInputChange}
                   >
-                    <option value="">Select Group</option>
+                    <option value="">Select Class</option>
                     {selectedClass?.subcategories?.map((item) => (
                       <option key={item.id} value={item.id}>{item.name}</option>
                     ))}
                   </select>
 
+                </div>
+              </div>
+
+              {/* Type of Institute */}
+              <div>
+                <label htmlFor="institute_type" className="block text-sm font-medium text-gray-700 mb-2">
+                  Group
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <School className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <select className='className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all' required name="institute_type" id="institute_type" value={formData.institute_type} onChange={handleInputChange}>
+                    <option value="">Select Group</option>
+                    <option value="general">Science</option>
+                    <option value="vocational">Arts</option>
+                    <option value="madrasha">Commerce</option>
+                  </select>
                 </div>
               </div>
             </div>
