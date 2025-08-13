@@ -326,7 +326,10 @@ const QuestionDetail = () => {
                         <div className="flex-1">
                           <div className="prose max-w-none mb-6">
                             <div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
-                              {comment.comment}
+                              <div
+                                dangerouslySetInnerHTML={{ __html: comment.comment }}
+                              ></div>
+                              {/* {comment.comment} */}
                             </div>
                             {comment.file && (
                               <a
