@@ -5,6 +5,7 @@ import { NavLink, useNavigate, useParams } from 'react-router';
 import { format } from 'timeago.js';
 import { useAuth } from '../Auth/context/AuthContext';
 import toast from 'react-hot-toast';
+import RichTextEditor from '../components/RichTextEditor';
 const QuestionDetail = () => {
   const userId = sessionStorage.getItem("userId");
   const [votes, setVotes] = useState({ upvotes: 0, downvotes: 0 });
@@ -355,12 +356,13 @@ const QuestionDetail = () => {
       {/* Add Answer */}
       <div className="bg-white rounded-lg border border-gray-200 p-8">
         <h3 className="text-xl font-bold text-gray-900 mb-4">Your Answer</h3>
-        <textarea
+        <RichTextEditor value={commentText} onChange={setCommentText} className={'w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none'}/>
+        {/* <textarea
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
           placeholder="Write your answer here..."
           className="w-full h-40 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-        />
+        /> */}
         <div className="flex items-center justify-between mt-4">
           <button
             onClick={handlePostComment}

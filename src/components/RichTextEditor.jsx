@@ -78,8 +78,10 @@ const formats = [
   "link", "image",
 ];
 
-const RichTextEditor = ({ value, onChange }) => (
+const RichTextEditor = ({ value, onChange, className }) => (
   <ReactQuill
+  style={{ minHeight: '200px' }}
+  className={className}
     theme="snow"
     value={value}
     onChange={onChange}

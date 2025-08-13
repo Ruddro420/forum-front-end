@@ -112,6 +112,12 @@ const QuestionCard = ({ question }) => {
       console.error("Vote failed:", err);
     }
   };
+  function stripHtml(html) {
+  const tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
+}
+
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
@@ -176,9 +182,11 @@ const QuestionCard = ({ question }) => {
           </div>
 
           <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-            <div
+
+            {stripHtml(details)}
+            {/* <div
                   dangerouslySetInnerHTML={{ __html:details }}
-                ></div>
+                ></div> */}
             {/* {details} */}
           </p>
 

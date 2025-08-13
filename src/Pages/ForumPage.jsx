@@ -53,6 +53,8 @@ const ForumPage = () => {
 
   const tags = fetauredTag ? Object.keys(fetauredTag).slice(0, 9) : [];
 
+  
+
   return (
     <>
       <FilterBar
