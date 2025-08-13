@@ -20,25 +20,29 @@ import ChatBox from './Pages/ChatBox';
 
 const router = createBrowserRouter([
   {
-    path: "",
+    path: "/",
+    element: <Home />
+  },
+  {
+    path: "forum",
     element: <MainLayout />,
     children: [
-      { path: "/", element: <ForumPage /> },
-      { path: "/questions", element: <ForumPage /> },
-      { path: "/shop", element: <ShopPage /> },
-      { path: "/category/:id", element: <Categories /> },
+      { path: "/forum/", element: <ForumPage /> },
+      { path: "/forum/questions", element: <ForumPage /> },
+      { path: "/forum/shop", element: <ShopPage /> },
+      { path: "/forum/category/:id", element: <Categories /> },
     ]
   },
   {
-    path: "",
+    path: "forum",
     element: <PrivateRoute><MainLayout /></PrivateRoute>,
     children: [
-      { path: "/ask-question", element: <AskQuestion /> },
-      { path: "/question-detail/:id", element: <QuestionDetail /> },
-      { path: "/message", element: <ChatInterface /> },
-      { path: "/profile", element: <StudentProfile /> },
-      { path: "/dashboard", element: <StudentDashboard /> },
-      { path: "/chatbox", element: <ChatBox /> },
+      { path: "/forum/ask-question", element: <AskQuestion /> },
+      { path: "/forum/question-detail/:id", element: <QuestionDetail /> },
+      { path: "/forum/message", element: <ChatInterface /> },
+      { path: "/forum/profile", element: <StudentProfile /> },
+      { path: "/forum/dashboard", element: <StudentDashboard /> },
+      { path: "/forum/chatbox", element: <ChatBox /> },
 
     ]
   },

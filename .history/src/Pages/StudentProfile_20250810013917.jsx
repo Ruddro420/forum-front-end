@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { MapPin, Calendar, Link as LinkIcon, Award, MessageSquare, Eye, Star, Edit, Settings, Mail, Github, Twitter } from 'lucide-react';
-import profileData from '../../public/data/ProfileData/profileData.json';
+
 import { useAuth } from '../Auth/context/AuthContext';
 import { Link, NavLink } from 'react-router';
 import Loader from '../components/Loader';
@@ -11,7 +11,7 @@ const StudentProfile = () => {
     // console.log(user);
 
 
-    const profile = profileData;
+  
 
 
 
@@ -182,7 +182,7 @@ const StudentProfile = () => {
                                     recentQuestions.map((question) => (
                                         <div key={question.id} className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
                                             <div className="flex items-start justify-between mb-2">
-                                                <Link to={`/question-detail/${question.id}`} className="font-medium text-gray-900 hover:text-blue-600 cursor-pointer">
+                                                <Link to={`/forum/question-detail/${question.id}`} className="font-medium text-gray-900 hover:text-blue-600 cursor-pointer">
                                                     {question.title}
                                                 </Link>
                                                 <span className={`px-2 py-1 rounded text-xs font-medium ${question.status === 'answered'
@@ -232,7 +232,7 @@ const StudentProfile = () => {
                                             return acc;
                                         }, {})
                                     ).map(([tag, count]) => (
-                                        <Link to={`/?tag=${tag}`}
+                                        <Link to={`/forum/?tag=${tag}`}
                                             key={tag}
                                             className={`inline-block bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full ${tag == " " ? "hidden" : ""}`}
                                         >

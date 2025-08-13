@@ -32,6 +32,13 @@ const Register = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const userId = sessionStorage.getItem("userId");
+    if (userId) {
+      navigate("/forum/");
+    }
+  }, [navigate]);
+
   const fetchcategory = () => {
     axios.get(`${VITE_SERVER_API}/category`)
       .then(res => setinstuteData(res.data))
@@ -178,7 +185,7 @@ const Register = () => {
             </div>
 
             {/* Category and sub Category */}
-            <div className={`grid ${isClass?"grid-cols-2":"grid-cols-1"}  gap-4`}>
+            <div className={`grid ${isClass ? "grid-cols-2" : "grid-cols-1"}  gap-4`}>
               <div>
                 <label htmlFor="institute" className="block text-sm font-medium text-gray-700 mb-2">
                   Institute Type

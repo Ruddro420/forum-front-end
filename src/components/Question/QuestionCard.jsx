@@ -3,7 +3,7 @@
 import { ArrowDown, ArrowUp, Bookmark, Clock, Eye, MessageCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { format } from "timeago.js";
 
 const QuestionCard = ({ question }) => {
@@ -37,7 +37,7 @@ const QuestionCard = ({ question }) => {
   const navigate = useNavigate();
 
   const answersQuestion = () => {
-    navigate(`/question-detail/${id}`);
+    navigate(`/forum/question-detail/${id}`);
   }
   // get views
   const [views, setViews] = useState(0);
@@ -193,13 +193,14 @@ const QuestionCard = ({ question }) => {
           {/* Tags */}
           <div className="flex flex-wrap gap-2 mb-4">
             {tagArray.map((tag, index) => (
-              <span
+              <Link
                 key={index}
+                to={`/forum/?tag=${tag.trim()}`}
                 className={`px-2 py-1 rounded text-xs font-medium cursor-pointer hover:opacity-80 transition-opacity ${tagColors[index % tagColors.length]
                   }`}
               >
                 {tag.trim()}
-              </span>
+              </Link>
             ))}
           </div>
 

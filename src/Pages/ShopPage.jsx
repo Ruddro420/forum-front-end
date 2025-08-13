@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import {
@@ -16,6 +17,7 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { useNavigate } from 'react-router';
+import Loader from '../components/Loader';
 
 const ShopPage = () => {
   const [products, setProducts] = useState([]);
@@ -27,10 +29,15 @@ const ShopPage = () => {
   const [subCategories, setSubCategories] = useState([]);
 
   const navigate = useNavigate();
+  const API_BASE_URL = import.meta.env.VITE_SERVER_API;
+  const FILE_BASE_URL = import.meta.env.VITE_SERVER_BASE;
+
+  const [loading, setLoading] = useState(false);
 
   // Fetch products from API
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_SERVER_API}/data/active/books`) // <-- Replace with your actual endpoint
+    setLoading(true);
+    fetch(`${API_BASE_URL}/data/active/books`) // <-- Replace with your actual endpoint
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -50,12 +57,13 @@ const ShopPage = () => {
 
           setCategories(cats);
           setSubCategories(subs);
+          setLoading(false);
         }
       });
   }, []);
 
   console.log(products);
-  
+
 
   const filteredProducts = products.filter((product) => {
     const categoryMatch = selectedCategory === 'all' || product.category?.id === selectedCategory;
@@ -75,14 +83,15 @@ const ShopPage = () => {
   };
 
   return (
-    <div className="mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Learning Store</h1>
-        <p className="text-gray-600">Enhance your skills with premium courses, templates, and resources</p>
-      </div>
+    <>
+      {loading ? <div className="w-screen h-screen flex justify-center items-center"><Loader /> </div> : <div className="mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Learning Store</h1>
+          <p className="text-gray-600">Enhance your skills with premium courses, templates, and resources</p>
+        </div>
 
-      {/* Filters */}
-      {/* <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+        {/* Filters */}
+        {/* <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
           <div className="flex-1 max-w-md">
             <div className="relative">
@@ -126,114 +135,116 @@ const ShopPage = () => {
         </div>
       </div> */}
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Sidebar */}
-        <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Categories</h3>
-            <div className="space-y-2">
-              <button
-                onClick={() => {
-                  setSelectedCategory('all');
-                  setSelectedSubCategory('all');
-                }}
-                className={`w-full p-3 rounded-lg text-left transition-colors ${selectedCategory === 'all' ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'hover:bg-gray-50 text-gray-700'}`}
-              >
-                All Categories
-              </button>
-              {categories.map((category) => (
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-lg border min-h-full border-gray-200 p-6 sticky top-8">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Categories</h3>
+              <div className="space-y-2">
                 <button
-                  key={category.id}
                   onClick={() => {
-                    setSelectedCategory(category.id);
+                    setSelectedCategory('all');
                     setSelectedSubCategory('all');
                   }}
-                  className={`w-full p-3 rounded-lg text-left transition-colors ${selectedCategory === category.id ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'hover:bg-gray-50 text-gray-700'}`}
+                  className={`w-full p-3 rounded-lg text-left transition-colors ${selectedCategory === 'all' ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'hover:bg-gray-50 text-gray-700'}`}
                 >
-                  {category.name}
+                  All Categories
                 </button>
-              ))}
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => {
+                      setSelectedCategory(category.id);
+                      setSelectedSubCategory('all');
+                    }}
+                    className={`w-full p-3 rounded-lg text-left transition-colors ${selectedCategory === category.id ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'hover:bg-gray-50 text-gray-700'}`}
+                  >
+                    {category.name}
+                  </button>
+                ))}
+              </div>
+
+              {/* Sub Categories */}
+              {selectedCategory !== 'all' && (
+                <>
+                  <h4 className="text-md font-semibold text-gray-800 mt-6 mb-2">Sub-Categories</h4>
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => setSelectedSubCategory('all')}
+                      className={`w-full p-2 rounded-lg text-left transition-colors ${selectedSubCategory === 'all' ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'hover:bg-gray-50 text-gray-700'}`}
+                    >
+                      All Sub-Categories
+                    </button>
+                    {subCategories
+                      .filter((sub) => sub.category_id === selectedCategory)
+                      .map((sub) => (
+                        <button
+                          key={sub.id}
+                          onClick={() => setSelectedSubCategory(sub.id)}
+                          className={`w-full p-2 rounded-lg text-left transition-colors ${selectedSubCategory === sub.id ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'hover:bg-gray-50 text-gray-700'}`}
+                        >
+                          {sub.name}
+                        </button>
+                      ))}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Products */}
+          <div className="lg:col-span-3">
+            <div className="mb-6 flex items-center justify-between">
+              <p className="text-gray-600">
+                Showing {filteredProducts.length} of {products.length} products
+              </p>
             </div>
 
-            {/* Sub Categories */}
-            {selectedCategory !== 'all' && (
-              <>
-                <h4 className="text-md font-semibold text-gray-800 mt-6 mb-2">Sub-Categories</h4>
-                <div className="space-y-2">
-                  <button
-                    onClick={() => setSelectedSubCategory('all')}
-                    className={`w-full p-2 rounded-lg text-left transition-colors ${selectedSubCategory === 'all' ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'hover:bg-gray-50 text-gray-700'}`}
-                  >
-                    All Sub-Categories
-                  </button>
-                  {subCategories
-                    .filter((sub) => sub.category_id === selectedCategory)
-                    .map((sub) => (
-                      <button
-                        key={sub.id}
-                        onClick={() => setSelectedSubCategory(sub.id)}
-                        className={`w-full p-2 rounded-lg text-left transition-colors ${selectedSubCategory === sub.id ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'hover:bg-gray-50 text-gray-700'}`}
-                      >
-                        {sub.name}
-                      </button>
-                    ))}
-                </div>
-              </>
-            )}
-          </div>
-        </div>
+            <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6' : 'space-y-6'}>
+              {filteredProducts.map((product) => {
+                const ProductIcon = getProductIcon(product.type);
 
-        {/* Products */}
-        <div className="lg:col-span-3">
-          <div className="mb-6 flex items-center justify-between">
-            <p className="text-gray-600">
-              Showing {filteredProducts.length} of {products.length} products
-            </p>
-          </div>
-
-          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6' : 'space-y-6'}>
-            {filteredProducts.map((product) => {
-              const ProductIcon = getProductIcon(product.type);
-
-              return (
-                <div key={product.id} className={`bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow ${viewMode === 'list' ? 'flex' : ''}`}>
-                  <div className={`relative ${viewMode === 'list' ? 'w-48 flex-shrink-0' : 'aspect-video'}`}>
-                    <img
-                      src={`http://192.168.1.104:8000/${product.cover_image}`}
-                      alt={product.name}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute top-3 left-3 flex space-x-2">
-                      <div className="bg-white bg-opacity-90 p-1 rounded">
-                        <ProductIcon className="h-4 w-4 text-gray-600" />
+                return (
+                  <div key={product.id} className={`bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow ${viewMode === 'list' ? 'flex' : ''}`}>
+                    <div className={`relative ${viewMode === 'list' ? 'w-48 flex-shrink-0' : 'aspect-video'}`}>
+                      <img
+                        src={`${FILE_BASE_URL}/${product.cover_image}`}
+                        alt={product.name}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute top-3 left-3 flex space-x-2">
+                        <div className="bg-white bg-opacity-90 p-1 rounded">
+                          <ProductIcon className="h-4 w-4 text-gray-600" />
+                        </div>
                       </div>
+                      <button className="absolute top-3 right-3 p-2 bg-white bg-opacity-90 rounded-full hover:bg-white transition-colors">
+                        <Heart className="h-4 w-4 text-gray-600" />
+                      </button>
                     </div>
-                    <button className="absolute top-3 right-3 p-2 bg-white bg-opacity-90 rounded-full hover:bg-white transition-colors">
-                      <Heart className="h-4 w-4 text-gray-600" />
-                    </button>
-                  </div>
 
-                  <div className="p-6 flex-1">
-                    <h3 className="font-semibold text-gray-900 text-lg mb-2">{product.name}</h3>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.description}</p>
-                    <div className="flex items-center space-x-2 mb-4">
-                      <span className="text-2xl font-bold text-gray-900">৳{product.price}</span>
+                    <div className="p-6 flex-1">
+                      <h3 className="font-semibold text-gray-900 text-lg mb-2">{product.name}</h3>
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.description}</p>
+                      <div className="flex items-center space-x-2 mb-4">
+                        <span className="text-2xl font-bold text-gray-900">৳{product.price}</span>
+                      </div>
+                      <button
+                        onClick={() => navigate(`/forum/chatbox`)}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center"
+                      >
+                        <MessageCircle className="h-4 w-4 mr-2" />
+                        Chat with Seller
+                      </button>
                     </div>
-                    <button
-                      onClick={() => navigate(`/chatbox`)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center"
-                    >
-                      <MessageCircle className="h-4 w-4 mr-2" />
-                      Chat with Seller
-                    </button>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </div>}
+    </>
+
   );
 };
 

@@ -1,7 +1,5 @@
 import { Navigate, useLocation } from 'react-router';
 import Loader from '../components/Loader';
-import { useAuth } from './context/AuthContext';
-import { useEffect } from 'react';
 
 const PrivateRoute = ({ children }) => {
     const location = useLocation();
@@ -12,6 +10,7 @@ const PrivateRoute = ({ children }) => {
 
     if (!userId) {
         return <Navigate to="/login" state={{ from: location }} replace />;
+
     }
 
     return children;

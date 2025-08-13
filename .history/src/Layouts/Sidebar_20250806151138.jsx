@@ -7,9 +7,9 @@ const Sidebar = ({ isOpen, onClose }) => {
   const { fetauredTag } = useAuth();
 
   const navigationItems = [
-    { icon: Home, label: 'Questions', count: null, url: "/" },
+    { icon: Home, label: 'Questions', count: null, url: "/forum/" },
     { icon: TrendingUp, label: 'Trending', count: null, url: "#" },
-    { icon: BookOpen, label: 'Book Shop', count: '2.4k', url: "/shop" },
+    { icon: BookOpen, label: 'Book Shop', count: '2.4k', url: "/forum/shop" },
     { icon: Users, label: 'Users', count: '890', url: "#" },
     { icon: Tag, label: 'Tags', count: null, url: "#" },
   ];

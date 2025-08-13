@@ -1,12 +1,18 @@
 import { HelpCircle } from 'lucide-react';
-import React from 'react';
 import { useAuth } from '../../Auth/context/AuthContext';
 import { Link } from 'react-router';
-// import { useAuth } from '../../Auth/context/AuthContext';
+// tags: array of current post tags, allPosts: array of all posts
+const QuestionDetailsSidebar = ({ tags}) => {
 
-const AddQuestionSidebar = () => {
-    const{posts} = useAuth();
+    const {userPost} = useAuth();
 
+    console.log("Tags in sidebar:", tags);
+    // Filter similar questions by tags
+    const similarQuestions = userPost?.filter(q => {
+        if (!q.tag) return false;
+        const qTags = q.tag.split(',').map(t => t.trim());
+        return qTags.some(tag => tags.includes(tag));
+    });
     return (
         <div>
             <div className="space-y-6">
@@ -14,12 +20,12 @@ const AddQuestionSidebar = () => {
                 <div className="bg-white rounded-lg border border-gray-200 p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                         <HelpCircle className="h-5 w-5 mr-2 text-blue-600" />
-                        How to ask a good question
+                        How to give a good answer
                     </h3>
                     <ul className="space-y-3 text-sm text-gray-600">
                         <li className="flex items-start">
                             <span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                            Make your title specific and descriptive
+                            Make your answer specific and descriptive
                         </li>
                         <li className="flex items-start">
                             <span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
@@ -27,15 +33,15 @@ const AddQuestionSidebar = () => {
                         </li>
                         <li className="flex items-start">
                             <span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                            Explain what you've already tried
+                            Explain your reasoning clearly
                         </li>
                         <li className="flex items-start">
                             <span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                            Use proper tags to categorize your question
+                            Use proper formatting for readability
                         </li>
                         <li className="flex items-start">
                             <span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                            Be respectful and patient
+                            Be respectful and constructive in your feedback
                         </li>
                     </ul>
                 </div>
@@ -43,11 +49,11 @@ const AddQuestionSidebar = () => {
                 {/* Similar Questions */}
                 <div className="bg-white rounded-lg border border-gray-200 p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        Questions You May Like
+                        Similar Questions
                     </h3>
                     <div className="space-y-3">
-                        {posts?.length > 0 ? (
-                            posts.slice(0, 10).map((q, idx) => (
+                        {similarQuestions?.length > 0 ? (
+                            similarQuestions.slice(0, 10).map((q, idx) => (
                                 <Link
                                     key={q.id || idx}
                                     to={`/forum/question-detail/${q.id}`}
@@ -61,15 +67,13 @@ const AddQuestionSidebar = () => {
                         )}
                     </div>
                 </div>
-
-                {/* Community Guidelines */}
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-yellow-800 mb-2">
                         Community Guidelines
                     </h3>
                     <p className="text-sm text-yellow-700">
-                        Please ensure your question follows our community guidelines. Be
-                        respectful, provide context, and help others learn.
+                        Please follow our community guidelines to ensure a respectful and constructive environment for everyone.
+                        Be kind, stay on topic, and help each other out.
                     </p>
                 </div>
             </div>
@@ -77,4 +81,4 @@ const AddQuestionSidebar = () => {
     );
 };
 
-export default AddQuestionSidebar;
+export default QuestionDetailsSidebar;

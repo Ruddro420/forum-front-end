@@ -32,7 +32,7 @@ const FilterBar = ({ categories, selectedCategoryId, onCategoryChange }) => {
             ))}
           </div>
 
-          <div className="flex items-center space-x-3">
+          {/* <div className="flex items-center space-x-3">
             <span className="text-sm text-gray-500">Sort by:</span>
             <div className="flex space-x-1">
               {filterOptions.map((option) => (
@@ -50,7 +50,7 @@ const FilterBar = ({ categories, selectedCategoryId, onCategoryChange }) => {
                 </button>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

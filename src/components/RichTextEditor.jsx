@@ -75,7 +75,7 @@ const formats = [
   "header",
   "bold", "italic", "underline", "strike", "blockquote",
   "list", "bullet",
-  "link", "image",
+  "link",  // "image",
 ];
 
 const RichTextEditor = ({ value, onChange, className }) => (

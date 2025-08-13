@@ -7,9 +7,9 @@ const Sidebar = ({ isOpen, onClose }) => {
   const { fetauredTag } = useAuth();
 
   const navigationItems = [
-    { icon: Home, label: 'Questions', count: null, url: "/" },
+    { icon: Home, label: 'Questions', count: null, url: "/forum/" },
     // { icon: TrendingUp, label: 'Trending', count: null, url: "#" },
-    { icon: BookOpen, label: 'Book Shop', count: '2.4k', url: "/shop" },
+    { icon: BookOpen, label: 'Book Shop', count: null, url: "/forum/shop" },
     // { icon: Users, label: 'Users', count: '890', url: "#" },
     // { icon: Tag, label: 'Tags', count: null, url: "#" },
   ];
@@ -49,7 +49,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'
           }`}
       >
-        <div className="flex flex-col lg:min-h-[90vh] pt-4 lg:pt-6">
+        <div className="flex md:mt-0 lg:mt-0 mt-16 flex-col lg:min-h-[90vh] pt-4 lg:pt-6">
           {/* Navigation */}
           <nav className="flex-1 px-4 space-y-1">
             {navigationItems.map((item, index) => {
@@ -91,7 +91,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 featuredTags.map((tag, index) => (
                   <div key={index}>
                     <Link
-                      to={`/?tag=${tag.name}`}
+                      to={`/forum/?tag=${tag.name}`}
                       key={index}
                       className={`flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors`}>
                       <span

@@ -23,7 +23,7 @@ const Header = ({ onMenuToggle, isMenuOpen }) => {
             >
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
-            <div onClick={() => navigate("/")} className="flex items-center ml-2 lg:ml-0 cursor-pointer">
+            <div onClick={() => navigate("/forum/")} className="flex items-center ml-2 lg:ml-0 cursor-pointer">
               <MessageSquare className="h-8 w-8 text-blue-600" />
 
               <span className="ml-2 text-xl font-bold text-gray-900">Edunika</span>
@@ -52,7 +52,7 @@ const Header = ({ onMenuToggle, isMenuOpen }) => {
               <Search className="h-5 w-5" />
             </button>
 
-            {user ? <button onClick={() => navigate("/ask-question")} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center">
+            {user ? <button onClick={() => navigate("/forum/ask-question")} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center">
               <Plus className="h-4 w-4 mr-2" />
               <span className="hidden sm:inline">Ask Question</span>
             </button>
@@ -68,7 +68,7 @@ const Header = ({ onMenuToggle, isMenuOpen }) => {
               <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">3</span>
             </button> */}
 
-            <div onClick={() => navigate("/profile")} className="flex items-center space-x-3 cursor-pointer">
+            <div onClick={() => navigate("/forum/profile")} className="flex items-center space-x-3 cursor-pointer">
               <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                 <User className="h-4 w-4 text-white" />
               </div>

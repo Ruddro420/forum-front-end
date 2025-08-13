@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, MessageSquare, ArrowRight, Github, ToggleLeft as Google } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import toast, { Toaster } from 'react-hot-toast';
@@ -15,9 +15,15 @@ const Login = () => {
     const { login } = useAuth()
 
     const navigate = useNavigate();
+    useEffect(() => {
+        const userId = sessionStorage.getItem("userId");
+        if (userId) {
+            navigate("/forum/");
+        }
+    }, [navigate]);
 
-// console.log(user);
-
+    // console.log(user);
+    // const userId = sessionStorage.getItem("userId");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,10 +34,11 @@ const Login = () => {
 
         if (res.success) {
             toast.success("Login successful!");
-            navigate("/");
+            navigate("/forum/");
         } else {
             toast.error(res.message || "Login failed!");
         }
+
     };
 
     return (
@@ -137,7 +144,7 @@ const Login = () => {
                             )}
                         </button>
                     </form>
-                    
+
 
                     {/* Divider */}
                     {/* <div className="mt-6">
