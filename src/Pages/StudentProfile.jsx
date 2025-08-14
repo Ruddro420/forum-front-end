@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { MapPin, Calendar, Link as LinkIcon, Award, MessageSquare, Eye, Star, Edit, Settings, Mail, Github, Twitter } from 'lucide-react';
 // import profileData from '../../public/data/ProfileData/profileData.json';
 import { useAuth } from '../Auth/context/AuthContext';
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
 import Loader from '../components/Loader';
 const StudentProfile = () => {
     const [activeTab, setActiveTab] = useState('questions');
@@ -13,7 +13,7 @@ const StudentProfile = () => {
 
     // const profile = profileData;
 
-
+        const Navigate = useNavigate();
 
     const [recentQuestions, setRecentQuestions] = useState([])
     const [loading, setLoading] = useState(true);
@@ -94,10 +94,16 @@ const StudentProfile = () => {
                                     </div>
                                 </div> */}
                             </div>
+                            <div className="flex gap-2">
+                                <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                {/* <Settings className="h-5 w-5" /> */}
+                                <button onClick={() => Navigate("/forum/cv")} className='btn btn-primary'>Generate CV</button>
+                            </button>
                             <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                                 <Settings className="h-5 w-5" />
                                 <button onClick={() => logout()} className='btn btn-primary'>Logout</button>
                             </button>
+                            </div>
                         </div>
 
                         {/* <p className="text-gray-700 mb-6">{profile.bio}</p> */}

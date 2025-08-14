@@ -17,6 +17,7 @@ import PrivateRoute from './Auth/PrivateRoute';
 import { AuthProvider } from './Auth/context/AuthContext';
 import Categories from './Pages/Categories';
 import ChatBox from './Pages/ChatBox';
+import CvGenerate from './Pages/CvGenerate';
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
       { path: "/forum/question-detail/:id", element: <QuestionDetail /> },
       { path: "/forum/message", element: <ChatInterface /> },
       { path: "/forum/profile", element: <StudentProfile /> },
+      { path: "/forum/cv", element: <CvGenerate /> },
       { path: "/forum/dashboard", element: <StudentDashboard /> },
       { path: "/forum/chatbox", element: <ChatBox /> },
 
