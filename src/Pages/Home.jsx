@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { nav } from 'framer-motion/client';
 import { useNavigate } from 'react-router';
+import HomeNav from '../components/HomeNav';
 
 // Animation variants
 const containerVariants = {
@@ -54,54 +55,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gray-50 overflow-x-hidden">
       {/* Navigation Bar */}
-      <motion.nav 
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5, type: 'spring' }}
-        className="bg-blue-700 text-white shadow-lg sticky top-0 z-50"
-      >
-        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <motion.div 
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center space-x-2 cursor-pointer"
-          >
-            <FaBook className="text-2xl" />
-            <span className="text-xl font-bold">Edunika</span>
-          </motion.div>
-          
-          <div className="hidden md:flex space-x-6">
-            {['Home', 'Forums', 'Resources', 'Universities', 'About'].map((item, index) => (
-              <motion.a 
-                key={index}
-                whileHover={{ scale: 1.05, color: '#93c5fd' }}
-                href="#"
-                className="font-medium"
-              >
-                {item}
-              </motion.a>
-            ))}
-          </div>
-          
-          <div className="flex items-center space-x-4">
-            <motion.button 
-            onClick={()=>navigate('/login')}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-blue-600 hover:bg-blue-800 px-4 py-2 rounded-md font-medium"
-            >
-              Login
-            </motion.button>
-            <motion.button 
-            onClick={()=>navigate('/register')}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-white text-blue-700 hover:bg-gray-100 px-4 py-2 rounded-md font-medium"
-            >
-              Register
-            </motion.button>
-          </div>
-        </div>
-      </motion.nav>
+      <HomeNav/>
 
       {/* Hero Section */}
       <motion.section 

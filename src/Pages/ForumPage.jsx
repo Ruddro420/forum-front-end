@@ -20,6 +20,10 @@ const ForumPage = () => {
     const params = new URLSearchParams(location.search);
     return params.get("tag");
   }, [location.search]);
+  const searchItem = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get("tag");
+  }, [location.search]);
 
   useEffect(() => {
     if (user) {
