@@ -20,6 +20,7 @@ const ForumPage = () => {
     const params = new URLSearchParams(location.search);
     return params.get("tag");
   }, [location.search]);
+  
   const searchItem = useMemo(() => {
     const params = new URLSearchParams(location.search);
     return params.get("tag");
@@ -38,13 +39,18 @@ const ForumPage = () => {
   // Filter posts
   const filteredPosts = useMemo(() => {
     if (selectedCategoryId) {
-      return showposts.filter(post => post.category_id === selectedCategoryId);
+      return showposts.filter(
+        (post) => post.category_id === selectedCategoryId
+      );
     }
     if (filterTag) {
       return showposts.filter(
-        post =>
+        (post) =>
           post.tag &&
-          post.tag.split(",").map(t => t.trim()).includes(filterTag)
+          post.tag
+            .split(",")
+            .map((t) => t.trim())
+            .includes(filterTag)
       );
     }
     return showposts;
@@ -58,11 +64,8 @@ const ForumPage = () => {
 
   const tags = fetauredTag ? Object.keys(fetauredTag).slice(0, 9) : [];
 
-
-
   return (
     <>
-
       {!user && (
         <FilterBar
           categories={[{ id: null, name: "All" }, ...(categories || [])]}
@@ -78,9 +81,12 @@ const ForumPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <div className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Questions</h1>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Questions
+              </h1>
               <p className="text-gray-600">
-                Find answers to your programming questions and help others learn.
+                Find answers to your programming questions and help others
+                learn.
               </p>
             </div>
 
@@ -88,18 +94,21 @@ const ForumPage = () => {
 
             {/* Pagination */}
             <div className="mt-8 flex items-center justify-center space-x-2">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  onClick={() => setCurrentPage(page)}
-                  className={`px-4 py-2 text-sm font-medium border rounded-lg ${currentPage === page
-                    ? "text-white bg-blue-600 border-blue-600"
-                    : "text-gray-700 bg-white border-gray-300 hover:bg-gray-50"
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`px-4 py-2 text-sm font-medium border rounded-lg ${
+                      currentPage === page
+                        ? "text-white bg-blue-600 border-blue-600"
+                        : "text-gray-700 bg-white border-gray-300 hover:bg-gray-50"
                     }`}
-                >
-                  {page}
-                </button>
-              ))}
+                  >
+                    {page}
+                  </button>
+                )
+              )}
 
               {currentPage < totalPages && (
                 <button
@@ -132,23 +141,25 @@ const ForumPage = () => {
                         setSelectedCategoryId(null);
                         setCurrentPage(1);
                       }}
-                      className={`px-3 py-1 rounded-lg text-sm font-medium cursor-pointer transition-colors ${filterTag === tag
-                        ? "bg-blue-600 text-white"
-                        : "bg-blue-100 text-blue-800 hover:bg-blue-200"
-                        }`}
+                      className={`px-3 py-1 rounded-lg text-sm font-medium cursor-pointer transition-colors ${
+                        filterTag === tag
+                          ? "bg-blue-600 text-white"
+                          : "bg-blue-100 text-blue-800 hover:bg-blue-200"
+                      }`}
                     >
                       {tag}
                     </span>
                   ))
                 ) : (
-                  <span className="text-sm text-gray-500">No tags available.</span>
+                  <span className="text-sm text-gray-500">
+                    No tags available.
+                  </span>
                 )}
               </div>
             </div>
           </div>
         </div>
       </div>
-
     </>
   );
 };

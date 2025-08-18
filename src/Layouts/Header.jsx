@@ -5,12 +5,12 @@ import { useAuth } from '../Auth/context/AuthContext';
 
 const Header = ({ onMenuToggle, isMenuOpen }) => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const navigate = useNavigate();
   // load users
   const { user } = useAuth();
   // console.log(user);
   // handle search submit
-
+  
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     const query = e.target[0].value.trim();
@@ -33,7 +33,7 @@ const Header = ({ onMenuToggle, isMenuOpen }) => {
             >
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
-            <div onClick={() => navigate("/forum/")} className="flex items-center ml-2 lg:ml-0 cursor-pointer">
+            <div onClick={() => navigate("/")} className="flex items-center ml-2 lg:ml-0 cursor-pointer">
               <MessageSquare className="h-8 w-8 text-blue-600" />
 
               <span className="ml-2 text-xl font-bold text-gray-900">Edunika</span>
