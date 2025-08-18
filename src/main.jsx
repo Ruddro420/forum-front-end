@@ -21,6 +21,9 @@ import CvGenerate from "./Pages/CvGenerate";
 import AboutPage from "./Pages/AboutPage";
 import ContactPage from "./Pages/ContactPage";
 import PublicLayout from "./Layouts/PublicLayout";
+import CommunityGuidelines from "./Pages/CommunityGuidelines ";
+import FAQPage from "./Pages/FAQPage";
+import TermsOfService from "./Pages/TermsOfService";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +41,18 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <ContactPage />,
+      },
+      {
+        path: "/community-guidelines",
+        element: <CommunityGuidelines />,
+      },
+      {
+        path: "/faqs",
+        element: <FAQPage />,
+      },
+      {
+        path: "/terms",
+        element: <TermsOfService />,
       },
     ],
   },

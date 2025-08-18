@@ -13,9 +13,7 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { nav } from "framer-motion/client";
 import { useNavigate } from "react-router";
-import HomeNav from "../components/HomeNav";
 
 // Animation variants
 const containerVariants = {
@@ -80,9 +78,19 @@ const Home = () => {
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20"
+        className="relative py-20 text-white min-h-[80vh] overflow-hidden flex flex-col items-center justify-center "
       >
-        <div className="container mx-auto px-4 text-center">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://i.postimg.cc/K8svpyL7/bg-image.jpg"
+            alt="Students studying together"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-blue-900 opacity-70"></div>
+        </div>
+
+        <div className="container mx-auto px-4 text-center relative z-10">
           <motion.h1
             variants={itemVariants}
             className="text-4xl md:text-6xl font-bold mb-6"
@@ -589,83 +597,7 @@ const Home = () => {
         </div>
       </motion.section>
 
-      {/* Footer */}
-      <motion.footer
-        initial="hidden"
-        whileInView="visible"
-        variants={fadeIn}
-        className="bg-gray-900 text-white pt-16 pb-8"
-      >
-        <div className="container mx-auto px-4 lg:px-20">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <motion.div variants={itemVariants}>
-              <h3 className="text-xl font-bold mb-4 flex items-center">
-                <FaBook className="mr-2" /> Edunika
-              </h3>
-              <p className="text-gray-400 mb-4">
-                Bangladesh's leading educational forum connecting students,
-                educators, and researchers.
-              </p>
-              <div className="flex space-x-4">
-                {["Facebook", "Twitter", "LinkedIn", "YouTube"].map(
-                  (social, index) => (
-                    <motion.a
-                      key={index}
-                      whileHover={{ y: -3 }}
-                      href="#"
-                      className="bg-gray-800 hover:bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center"
-                      title={social}
-                    >
-                      {social.charAt(0)}
-                    </motion.a>
-                  )
-                )}
-              </div>
-            </motion.div>
-
-            {[
-              {
-                title: "Quick Links",
-                links: ["Home", "Forums", "Resources", "Universities", "Blog"],
-              },
-              {
-                title: "Support",
-                links: [
-                  "Help Center",
-                  "Community Guidelines",
-                  "Contact Us",
-                  "FAQs",
-                ],
-              },
-              {
-                title: "Legal",
-                links: ["Terms of Service", "Privacy Policy", "Cookie Policy"],
-              },
-            ].map((column, colIndex) => (
-              <motion.div key={colIndex} variants={itemVariants}>
-                <h4 className="text-lg font-bold mb-4">{column.title}</h4>
-                <ul className="space-y-2">
-                  {column.links.map((link, linkIndex) => (
-                    <motion.li key={linkIndex} whileHover={{ x: 5 }}>
-                      <a href="#" className="text-gray-400 hover:text-white">
-                        {link}
-                      </a>
-                    </motion.li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div
-            variants={itemVariants}
-            className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400"
-          >
-            <p>© {new Date().getFullYear()} Edunika. All rights reserved.</p>
-            <p className="mt-2">Dhaka, Bangladesh</p>
-          </motion.div>
-        </div>
-      </motion.footer>
+   
     </div>
   );
 };
