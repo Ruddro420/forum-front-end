@@ -188,7 +188,7 @@ const AskQuestion = () => {
                   value={currentTag}
                   onChange={(e) => setCurrentTag(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Add subjects (press Enter to add)"
+                  placeholder="Add subjects  (EG: Bangla, English.. then press Enter to add)"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   disabled={tags.length >= 5}
                 />
