@@ -29,6 +29,7 @@ const HomeNav = () => {
       >
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <motion.div
+          onClick={() => navigate("/")}
             whileHover={{ scale: 1.05 }}
             className="flex items-center space-x-2 cursor-pointer"
           >

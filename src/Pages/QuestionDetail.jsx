@@ -271,7 +271,7 @@ const QuestionDetail = () => {
                     {tagArray.map((tag, index) => (
                       <Link
                         key={index}
-                        to={`/?tag=${tag}`}
+                        to={`/forum/?tag=${tag}`}
                         className={`px-2 py-1 rounded text-xs font-medium cursor-pointer hover:opacity-80 transition-opacity ${tagColors[index % tagColors.length]
                           }`}
                       >

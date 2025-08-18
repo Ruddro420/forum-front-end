@@ -13,9 +13,9 @@ const ActivityFeed = () => {
         <h3 className="text-lg font-semibold text-gray-900 ">
           Recent Activity
         </h3>
-        <button className="text-sm text-blue-600 hover:text-blue-700 ">
+        {/* <button className="text-sm text-blue-600 hover:text-blue-700 ">
           View all
-        </button>
+        </button> */}
       </div>
 
       <div className="space-y-4">
@@ -51,11 +51,11 @@ const ActivityFeed = () => {
         ))}
       </div>
 
-      <div className="mt-6 pt-4 border-t border-gray-200">
+      {/* <div className="mt-6 pt-4 border-t border-gray-200">
         <button className="w-full text-center text-sm text-blue-600 hover:text-blue-700  font-medium">
           Load more activity
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

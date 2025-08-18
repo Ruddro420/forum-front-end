@@ -137,7 +137,7 @@ const tags = fetauredTag ? Object.keys(fetauredTag).slice(0, 9) : [];
 
           {/* Sidebar */}
           <div className="space-y-6 mt-[90px]">
-            <StatsWidget />
+            {/* <StatsWidget /> */}
             <ActivityFeed />
 
             {/* Featured Tags */}
