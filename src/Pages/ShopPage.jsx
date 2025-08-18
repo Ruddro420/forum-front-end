@@ -339,9 +339,9 @@ const ShopPage = () => {
                             </div>
                           )}
                         </div>
-                        <button className="absolute top-3 right-3 p-2 bg-white bg-opacity-90 rounded-full hover:bg-white transition-colors">
+                        {/* <button className="absolute top-3 right-3 p-2 bg-white bg-opacity-90 rounded-full hover:bg-white transition-colors">
                           <Heart className="h-4 w-4 text-gray-600" />
-                        </button>
+                        </button> */}
                       </div>
 
                       <div className="p-6 flex-1">
