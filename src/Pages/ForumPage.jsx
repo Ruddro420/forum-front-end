@@ -13,6 +13,9 @@ const [currentPage, setCurrentPage] = useState(1);
 const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 const [showposts, setShowposts] = useState(posts);
 
+console.log(userPost);
+
+
 const location = useLocation();
 const navigate = useNavigate();
 

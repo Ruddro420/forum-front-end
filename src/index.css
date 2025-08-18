@@ -40,3 +40,21 @@
   }
 }
  */
+
+
+ /* Only print the CV preview panel */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  .cv-print-area, .cv-print-area * {
+    visibility: visible !important;
+  }
+  .cv-print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    box-shadow: none !important;
+  }
+}

@@ -1,3 +1,4 @@
+import html2pdf from "html2pdf.js";
 import React, { useState, useEffect, useRef } from "react";
 
 export default function CvGenerate() {
@@ -72,7 +73,7 @@ export default function CvGenerate() {
     reader.readAsDataURL(file);
   };
 
-  const downloadResume = () => {
+  /* const downloadResume = () => {
     if (!formRef.current) return;
     const formPanel = formRef.current;
     formPanel.style.display = "none";
@@ -80,7 +81,22 @@ export default function CvGenerate() {
     setTimeout(() => {
       formPanel.style.display = "block";
     }, 500);
-  };
+  }; */
+
+  const downloadResume = () => {
+  const cvElement = document.querySelector('.cv-print-area');
+  if (!cvElement) return;
+  html2pdf()
+    .set({
+      margin: 0,
+      filename: 'cv.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    })
+    .from(cvElement)
+    .save();
+};
 
   return (
     <div className="flex flex-col lg:flex-row p-4 gap-4">
@@ -130,7 +146,7 @@ export default function CvGenerate() {
       </div>
 
       {/* Preview Panel */}
-      <div className="w-full lg:w-2/3 bg-white p-6 shadow rounded print:w-full print:shadow-none" style={{ color: "#000" }}>
+      <div className="w-full lg:w-2/3 bg-white p-6 shadow rounded print:w-full print:shadow-none cv-print-area" style={{ color: "#000" }}>
         <div className="flex items-center gap-4 mb-4">
           {profileImage && <img src={profileImage} alt="Profile" className="w-24 h-24 object-cover rounded-full" />}
           <div>
