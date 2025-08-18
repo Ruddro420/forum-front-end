@@ -8,62 +8,76 @@ import { useAuth } from "../Auth/context/AuthContext";
 import Loader from "../components/Loader";
 
 const ForumPage = () => {
-  const { posts, fetauredTag, categories, user, userPost } = useAuth();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-  const [showposts, setShowposts] = useState(posts);
+const { posts, fetauredTag, categories, user, userPost } = useAuth();
+const [currentPage, setCurrentPage] = useState(1);
+const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+const [showposts, setShowposts] = useState(posts);
 
-  const location = useLocation();
-  const navigate = useNavigate();
+const location = useLocation();
+const navigate = useNavigate();
 
-  const filterTag = useMemo(() => {
-    const params = new URLSearchParams(location.search);
-    return params.get("tag");
-  }, [location.search]);
+const filterTag = useMemo(() => {
+  const params = new URLSearchParams(location.search);
+  return params.get("tag");
+}, [location.search]);
+
+const searchItem = useMemo(() => {
+  const params = new URLSearchParams(location.search);
+  return params.get("search");
+}, [location.search]);
+
+useEffect(() => {
+  if (user) {
+    setShowposts(userPost);
+  } else {
+    setShowposts(posts);
+  }
+}, [posts, userPost, user]);
+
+const postsPerPage = 4;
+
+// Filter posts
+const filteredPosts = useMemo(() => {
+  let result = [...showposts];
   
-  const searchItem = useMemo(() => {
-    const params = new URLSearchParams(location.search);
-    return params.get("tag");
-  }, [location.search]);
+  // Apply category filter
+  if (selectedCategoryId) {
+    result = result.filter((post) => post.category_id === selectedCategoryId);
+  }
+  
+  // Apply tag filter
+  if (filterTag) {
+    result = result.filter(
+      (post) =>
+        post.tag &&
+        post.tag
+          .split(",")
+          .map((t) => t.trim())
+          .includes(filterTag)
+    );
+  }
+  
+  // Apply search filter (case-insensitive)
+  if (searchItem) {
+    const searchTerm = searchItem.toLowerCase();
+    result = result.filter(
+      (post) =>
+        post.title.toLowerCase().includes(searchTerm) ||
+        (post.content && post.content.toLowerCase().includes(searchTerm)) ||
+        (post.tag && post.tag.toLowerCase().includes(searchTerm))
+    );
+  }
+  
+  return result;
+}, [showposts, selectedCategoryId, filterTag, searchItem]);
 
-  useEffect(() => {
-    if (user) {
-      setShowposts(userPost);
-    } else {
-      setShowposts(posts);
-    }
-  }, [posts, userPost, user]);
+const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+const paginatedPosts = filteredPosts.slice(
+  (currentPage - 1) * postsPerPage,
+  currentPage * postsPerPage
+);
 
-  const postsPerPage = 4;
-
-  // Filter posts
-  const filteredPosts = useMemo(() => {
-    if (selectedCategoryId) {
-      return showposts.filter(
-        (post) => post.category_id === selectedCategoryId
-      );
-    }
-    if (filterTag) {
-      return showposts.filter(
-        (post) =>
-          post.tag &&
-          post.tag
-            .split(",")
-            .map((t) => t.trim())
-            .includes(filterTag)
-      );
-    }
-    return showposts;
-  }, [showposts, selectedCategoryId, filterTag]);
-
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
-  const paginatedPosts = filteredPosts.slice(
-    (currentPage - 1) * postsPerPage,
-    currentPage * postsPerPage
-  );
-
-  const tags = fetauredTag ? Object.keys(fetauredTag).slice(0, 9) : [];
-
+const tags = fetauredTag ? Object.keys(fetauredTag).slice(0, 9) : [];
   return (
     <>
       {!user && (
