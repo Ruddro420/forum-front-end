@@ -488,7 +488,7 @@ const Home = () => {
                   whileHover={{ x: 5 }}
                   className="text-blue-600 hover:text-blue-800 font-medium flex items-center"
                 >
-                  View Resource <span className="ml-1">→</span>
+                  {/* View Resource <span className="ml-1">→</span> */}
                 </motion.button>
               </div>
             </motion.div>
