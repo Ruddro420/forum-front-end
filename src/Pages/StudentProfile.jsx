@@ -52,7 +52,7 @@ const StudentProfile = () => {
 
   const tabs = [
     { id: "questions", label: "Questions", count: recentQuestions.length },
-    { id: "tags", label: "Tags" },
+    { id: "tags", label: "Subjects" },
   ];
 
   return (
@@ -256,7 +256,7 @@ const StudentProfile = () => {
                         </div>
                         {question.tag && (
                           <div className="mt-2 text-xs text-blue-600">
-                            Tags: {question.tag}
+                            Subjects: {question.tag}
                           </div>
                         )}
                       </div>

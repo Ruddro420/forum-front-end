@@ -84,7 +84,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           {/* Popular Tags */}
           <div className="px-4 py-6">
             <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
-              Popular Tags
+              Popular Subjects
             </h3>
             <div className="space-y-2">
               {featuredTags.length > 0 ? (
@@ -105,7 +105,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                   </div>
                 ))
               ) : (
-                <p className="text-sm text-gray-400">No tags found.</p>
+                <p className="text-sm text-gray-400">No subjects found.</p>
               )}
             </div>
           </div>

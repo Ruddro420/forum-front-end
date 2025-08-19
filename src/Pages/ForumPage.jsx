@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FilterBar from "../components/FilterBar";
@@ -107,10 +108,11 @@ const tags = fetauredTag ? Object.keys(fetauredTag).slice(0, 9) : [];
               </p>
             </div>
 
-            <QuestionList posts={paginatedPosts} />
+            {/* <QuestionList posts={paginatedPosts} /> */}
+            <QuestionList posts={filteredPosts} />
 
             {/* Pagination */}
-            <div className="mt-8 flex items-center justify-center space-x-2">
+            {/* <div className="mt-8 flex items-center justify-center space-x-2">
               {Array.from({ length: totalPages }, (_, i) => i + 1).map(
                 (page) => (
                   <button
@@ -135,18 +137,18 @@ const tags = fetauredTag ? Object.keys(fetauredTag).slice(0, 9) : [];
                   Next
                 </button>
               )}
-            </div>
+            </div> */}
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6 mt-[90px]">
+          <div className="space-y-6 mt-[90px] lg:block md:block hidden">
             {/* <StatsWidget /> */}
             <ActivityFeed />
 
             {/* Featured Tags */}
             <div className="bg-white rounded-lg border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Featured Tags
+                Featured Subjects
               </h3>
               <div className="flex flex-wrap gap-2">
                 {tags.length > 0 ? (
@@ -169,7 +171,7 @@ const tags = fetauredTag ? Object.keys(fetauredTag).slice(0, 9) : [];
                   ))
                 ) : (
                   <span className="text-sm text-gray-500">
-                    No tags available.
+                    No subjects available.
                   </span>
                 )}
               </div>
