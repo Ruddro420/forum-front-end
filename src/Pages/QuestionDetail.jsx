@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ArrowUp, ArrowDown, MessageCircle, Bookmark, Share2, Flag, Clock, Eye, CheckCircle } from 'lucide-react';
+import { ArrowUp, ArrowDown, MessageCircle, Bookmark, Clock, Eye } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate, useParams } from 'react-router';
 import { format } from 'timeago.js';
@@ -8,33 +8,33 @@ import toast from 'react-hot-toast';
 import RichTextEditor from '../components/RichTextEditor';
 import QuestionDetailsSidebar from '../components/Question/QuestionDetailsSidebar';
 import Loader from '../components/Loader';
+
 const QuestionDetail = () => {
   const userId = sessionStorage.getItem("userId");
   const [votes, setVotes] = useState({ upvotes: 0, downvotes: 0 });
   const [loading, setLoading] = useState(false);
-
+  const [showSidebar, setShowSidebar] = useState(false);
   const [post, setPost] = useState([]);
   const [commentText, setCommentText] = useState('');
   const [commentFile, setCommentFile] = useState(null);
   const [views, setViews] = useState(0);
+  
   // get id 
   const { id } = useParams();
-  const { fetchPost, fetchTotalData } = useAuth()
+  const { fetchPost, fetchTotalData } = useAuth();
+  const navigate = useNavigate();
 
   // fetch post data
   const fetchPostByID = async () => {
     setLoading(true);
-    //   const userId = sessionStorage.getItem("userId");
     try {
       const res = await fetch(`${import.meta.env.VITE_SERVER_API}/posts/${id}`);
-      // console.log("respose of me",res);
       if (!res.ok) throw new Error("Failed to fetch user");
       const data = await res.json();
       setPost(data.data);
       fetchTotalData();
     } catch (error) {
       console.error("Fetch user error:", error);
-      // setUser(null);
     } finally {
       setLoading(false);
     }
@@ -46,7 +46,7 @@ const QuestionDetail = () => {
 
     const formData = new FormData();
     formData.append('post_id', post.id);
-    formData.append('user_id', sessionStorage.getItem('userId')); // or wherever your user ID is stored
+    formData.append('user_id', sessionStorage.getItem('userId'));
     formData.append('comment', commentText);
     if (commentFile) {
       formData.append('file', commentFile);
@@ -125,7 +125,6 @@ const QuestionDetail = () => {
     fetchVotes();
   }, [id]);
 
-  const navigate = useNavigate()
   // add vote
   const handleVote = async (voteType) => {
     if (!userId) {
@@ -139,13 +138,13 @@ const QuestionDetail = () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_SERVER_API}/vote`, {
         method: "POST",
-        credentials: "include", // important if using Sanctum
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           post_id: id,
-          user_id: userId, // assuming you have auth user context
+          user_id: userId,
           vote: voteType,
         }),
       });
@@ -167,18 +166,6 @@ const QuestionDetail = () => {
     }
   };
 
-
-
-
-
-
-
-
-
-
-
-
-  // console.log(post);
   // trim tags
   const tagArray = post.tag?.split(',') || [];
   // tag color
@@ -190,208 +177,254 @@ const QuestionDetail = () => {
     'bg-pink-100 text-pink-800',
   ];
 
-
   return (
     <>
-      {loading ? <div className="w-screen h-screen flex justify-center items-center"><Loader /></div> : <div className=" mx-auto px-4 py-8">
-        {/* Breadcrumb */}
-        <nav className="mb-6">
-          <ol className="flex items-center space-x-2 text-sm text-gray-500">
-            <li><NavLink to={`/`} className="hover:text-blue-600">Home</NavLink></li>
-            <li>/</li>
-            <li><a href="#" className="hover:text-blue-600">Questions</a></li>
-            <li>/</li>
-            <li className="text-gray-900">{post.title}</li>
-          </ol>
-        </nav>
+      {loading ? (
+        <div className="w-screen h-screen flex justify-center items-center">
+          <Loader />
+        </div>
+      ) : (
+        <div className="mx-auto px-4 py-4 md:py-8">
+          {/* Mobile Header */}
+          <div className="flex items-center mb-4 md:hidden">
+            <button 
+              onClick={() => navigate(-1)}
+              className="p-2 mr-2 rounded-full hover:bg-gray-100"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+            </button>
+            <h1 className="text-xl font-bold text-gray-900 truncate flex-1">
+              Question
+            </h1>
+            <button 
+              onClick={() => setShowSidebar(!showSidebar)}
+              className="p-2 rounded-full hover:bg-gray-100"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+              </svg>
+            </button>
+          </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Breadcrumb - Hidden on mobile */}
+          <nav className="mb-6 hidden md:block">
+            <ol className="flex items-center space-x-2 text-sm text-gray-500">
+              <li><NavLink to={`/`} className="hover:text-blue-600">Home</NavLink></li>
+              <li>/</li>
+              <li><a href="#" className="hover:text-blue-600">Questions</a></li>
+              <li>/</li>
+              <li className="text-gray-900 truncate max-w-xs">{post.title}</li>
+            </ol>
+          </nav>
 
-          <div className='lg:col-span-2'>
-            {/* Question */}
-            <div className="bg-white rounded-lg border border-gray-200 p-8 mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+            <div className='lg:col-span-2'>
+              {/* Question */}
+              <div className="bg-white rounded-lg border border-gray-200 p-4 md:p-6 lg:p-8 mb-6">
+                <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+                  {/* Vote Section - Horizontal on mobile, vertical on desktop */}
+                  <div className="flex flex-row md:flex-col items-center justify-center md:justify-start space-x-4 md:space-x-0 md:space-y-2 min-w-0 order-2 md:order-1">
+                    <button
+                      onClick={() => handleVote("upvote")}
+                      className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                    >
+                      <ArrowUp className="h-5 w-5 text-gray-400 hover:text-green-600" />
+                    </button>
 
-              <div className="flex gap-6">
-                {/* Vote Section */}
-                <div className="flex flex-col items-center space-y-2 min-w-0">
-                  <button
-                    onClick={() => handleVote("upvote")}
-                    className="p-1 hover:bg-gray-100 rounded transition-colors"
-                  >
-                    <ArrowUp className="h-5 w-5 text-gray-400 hover:text-green-600" />
-                  </button>
-
-                  <span className="text-lg font-medium bg-green-200 text-green-600 p-2 rounded">
-                    {votes.upvotes}
-                  </span>
-                  <span className="text-lg font-medium bg-red-200 text-red-600 p-2 rounded">
-                    {votes.downvotes}
-                  </span>
-
-                  <button
-                    onClick={() => handleVote("downvote")}
-                    className="p-1 hover:bg-gray-100 rounded transition-colors"
-                  >
-                    <ArrowDown className="h-5 w-5 text-gray-400 hover:text-red-600" />
-                  </button>
-                </div>
-
-                {/* Content */}
-                <div className="flex-1">
-                  <h1 className="text-3xl font-bold text-gray-900 mb-4">{post.title}</h1>
-
-                  {/* Meta Info */}
-                  <div className="flex items-center space-x-6 mb-6 text-sm text-gray-500">
-                    <div className="flex items-center">
-                      <Clock className="h-4 w-4 mr-1" />
-                      <span>Asked {format(post.created_at)}</span>
+                    <div className="flex md:flex-col items-center space-x-2 md:space-x-0 md:space-y-1">
+                      <span className="text-base font-medium bg-green-200 text-green-600 px-2 py-1 rounded">
+                        {votes.upvotes}
+                      </span>
+                      <span className="text-base font-medium bg-red-200 text-red-600 px-2 py-1 rounded">
+                        {votes.downvotes}
+                      </span>
                     </div>
-                    <div className="flex items-center">
-                      <Eye className="h-4 w-4 mr-1" />
-                      <span>{views} views</span>
-                    </div>
-                    <div className="flex items-center">
-                      <MessageCircle className="h-4 w-4 mr-1" />
-                      <span>{post.comments?.length > 0 ? post.comments.length : 0} answers</span>
-                    </div>
+
+                    <button
+                      onClick={() => handleVote("downvote")}
+                      className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                    >
+                      <ArrowDown className="h-5 w-5 text-gray-400 hover:text-red-600" />
+                    </button>
+                    
+                    {/* Mobile bookmark - only visible on mobile */}
+                    <button className="p-2 hover:bg-gray-100 rounded-full transition-colors md:hidden">
+                      <Bookmark className="h-5 w-5 text-gray-400 hover:text-blue-600" />
+                    </button>
                   </div>
 
                   {/* Content */}
-                  <div className="prose max-w-none mb-6">
-                    <div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
-                      <div
-                        dangerouslySetInnerHTML={{ __html: post.details }}
-                      ></div>
+                  <div className="flex-1 order-1 md:order-2">
+                    <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 md:mb-4">{post.title}</h1>
 
+                    {/* Meta Info */}
+                    <div className="flex flex-wrap items-center gap-3 md:gap-6 mb-4 md:mb-6 text-sm text-gray-500">
+                      <div className="flex items-center">
+                        <Clock className="h-4 w-4 mr-1" />
+                        <span>Asked {format(post.created_at)}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Eye className="h-4 w-4 mr-1" />
+                        <span>{views} views</span>
+                      </div>
+                      <div className="flex items-center">
+                        <MessageCircle className="h-4 w-4 mr-1" />
+                        <span>{post.comments?.length > 0 ? post.comments.length : 0} answers</span>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {tagArray.map((tag, index) => (
-                      <Link
-                        key={index}
-                        to={`/forum/?tag=${tag}`}
-                        className={`px-2 py-1 rounded text-xs font-medium cursor-pointer hover:opacity-80 transition-opacity ${tagColors[index % tagColors.length]
-                          }`}
-                      >
-                        {tag.trim()}
-                      </Link>
-                    ))}
-                  </div>
+                    {/* Content */}
+                    <div className="prose max-w-none mb-4 md:mb-6">
+                      <div className="text-gray-700 leading-relaxed overflow-x-auto">
+                        <div
+                          dangerouslySetInnerHTML={{ __html: post.details }}
+                        ></div>
+                      </div>
+                    </div>
 
-                  {/* Actions */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <button className="flex items-center text-gray-600 hover:text-blue-600 transition-colors">
-                        <Flag className="h-4 w-4 mr-1" />
-                        {post?.category?.name}
-                      </button>
-                      <button className="flex items-center text-gray-600 hover:text-red-600 transition-colors">
-                        <Flag className="h-4 w-4 mr-1" />
-                        {post?.sub_category?.name}
-                      </button>
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {tagArray.map((tag, index) => (
+                        <Link
+                          key={index}
+                          to={`/forum/?tag=${tag}`}
+                          className={`px-2 py-1 rounded text-xs font-medium cursor-pointer hover:opacity-80 transition-opacity ${tagColors[index % tagColors.length]}`}
+                        >
+                          {tag.trim()}
+                        </Link>
+                      ))}
+                    </div>
+
+                    {/* Categories */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {post?.category && (
+                        <span className="px-2 py-1 rounded text-xs font-medium bg-orange-100 text-orange-800">
+                          {post.category.name}
+                        </span>
+                      )}
+                      {post?.sub_category && (
+                        <span className="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
+                          {post.sub_category.name}
+                        </span>
+                      )}
                     </div>
 
                     {/* Author Info */}
-                    <div className="flex items-center space-x-3">
-                      <div className="text-right">
-                        <div className="text-sm text-gray-500">asked by</div>
-                        <div className="font-medium text-gray-900">{post?.student ? post.student.first_name : 'Admin'}</div>
-                        {/* <div className="text-sm text-green-600">{question?.author?.reputation?.toLocaleString()}</div> */}
-                      </div>
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium">
-                        {post?.student ? post?.student?.first_name.split(' ').map(n => n[0]).join('') : 'A'}
+                    <div className="flex items-center justify-end gap-4 md:gap-0 pt-4 border-t border-gray-200">
+                      <div className="flex items-center space-x-3">
+                        <div className="text-right">
+                          <div className="text-xs md:text-sm text-gray-500">asked by</div>
+                          <div className="font-medium text-gray-900 text-sm md:text-base">
+                            {post?.student ? post.student.first_name : 'Admin'}
+                          </div>
+                        </div>
+                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium text-xs md:text-sm">
+                          {post?.student ? post?.student?.first_name.split(' ').map(n => n[0]).join('') : 'A'}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Answers */}
-            {post.comments?.length > 0 && (
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                  {post.comments.length} Answers
-                </h2>
+              {/* Answers */}
+              {post.comments?.length > 0 && (
+                <div className="mb-6 md:mb-8">
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6">
+                    {post.comments.length} Answers
+                  </h2>
 
-                <div className="space-y-6">
-                  {post.comments.map((comment, index) => (
-                    <div key={index} className="bg-white rounded-lg border border-gray-200 p-8">
-                      <div className="flex gap-6">
-                        <div className="flex flex-col items-center space-y-3">
-                          {/* Upvote/downvote could be added later */}
-                        </div>
-                        <div className="flex-1">
-                          <div className="prose max-w-none mb-6">
-                            <div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
-                              <div
-                                dangerouslySetInnerHTML={{ __html: comment.comment }}
-                              ></div>
-                              {/* {comment.comment} */}
-                            </div>
-                            {comment.file && (
-                              <a
-                                href={`${import.meta.env.VITE_SERVER_BASE}/storage/${comment.file}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-600 underline"
-                              >
-                                Attached File
-                              </a>
-                            )}
+                  <div className="space-y-4 md:space-y-6">
+                    {post.comments.map((comment, index) => (
+                      <div key={index} className="bg-white rounded-lg border border-gray-200 p-4 md:p-6 lg:p-8">
+                        <div className="flex gap-4 md:gap-6">
+                          <div className="flex flex-col items-center space-y-2 min-w-0">
+                            {/* Upvote/downvote could be added later */}
                           </div>
+                          <div className="flex-1">
+                            <div className="prose max-w-none mb-4 md:mb-6">
+                              <div className="text-gray-700 leading-relaxed overflow-x-auto">
+                                <div
+                                  dangerouslySetInnerHTML={{ __html: comment.comment }}
+                                ></div>
+                              </div>
+                              {comment.file && (
+                                <a
+                                  href={`${import.meta.env.VITE_SERVER_BASE}/storage/${comment.file}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 underline text-sm mt-2 inline-block"
+                                >
+                                  Attached File
+                                </a>
+                              )}
+                            </div>
 
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-3">
-                              <div className="text-right">
-                                <div className="text-sm text-gray-500">answered</div>
-                                <div className="font-medium text-gray-900">
-                                  {comment.user?.first_name || 'Unknown'}
+                            <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                              <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-r from-green-500 to-blue-600 flex items-center justify-center text-white font-medium text-xs md:text-sm">
+                                  {comment.user?.first_name?.charAt(0) || '?'}
+                                </div>
+                                <div>
+                                  <div className="text-xs md:text-sm text-gray-500">answered</div>
+                                  <div className="font-medium text-gray-900 text-sm md:text-base">
+                                    {comment.user?.first_name || 'Unknown'}
+                                  </div>
                                 </div>
                               </div>
-                              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-blue-600 flex items-center justify-center text-white font-medium">
-                                {comment.user?.first_name?.charAt(0) || '?'}
+                              <div className="text-xs text-gray-500">
+                                {format(comment.created_at)}
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-            {/* Add Answer */}
-            <div className="bg-white rounded-lg border border-gray-200 p-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Your Answer</h3>
-              <RichTextEditor value={commentText} onChange={setCommentText} className={'w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none'} />
-              {/* <textarea
-          value={commentText}
-          onChange={(e) => setCommentText(e.target.value)}
-          placeholder="Write your answer here..."
-          className="w-full h-40 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-        /> */}
-              <div className="flex items-center justify-between mt-4">
-                <button
-                  onClick={handlePostComment}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
-                  Post Answer
-                </button>
+              )}
+              
+              {/* Add Answer */}
+              <div className="bg-white rounded-lg border border-gray-200 p-4 md:p-6 lg:p-8">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4">Your Answer</h3>
+                <RichTextEditor 
+                  value={commentText} 
+                  onChange={setCommentText} 
+                  className={'w-full p-3 md:p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none'} 
+                />
+                <div className="flex items-center justify-between mt-4">
+                  <button
+                    onClick={handlePostComment}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 md:px-6 md:py-2 rounded-lg font-medium transition-colors text-sm md:text-base">
+                    Post Answer
+                  </button>
+                </div>
               </div>
             </div>
 
+            {/* Sidebar */}
+            <div className={`lg:col-span-1 ${showSidebar ? 'block fixed inset-0 z-50 bg-white p-4 overflow-auto' : 'hidden'} lg:block`}>
+              {showSidebar && (
+                <div className="flex justify-between items-center mb-4 lg:hidden">
+                  <h2 className="text-lg font-bold">Sidebar</h2>
+                  <button 
+                    onClick={() => setShowSidebar(false)}
+                    className="p-1 rounded-full hover:bg-gray-100"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              )}
+              <QuestionDetailsSidebar tags={tagArray} />
+            </div>
           </div>
-
-          {/* Sidebar */}
-          <QuestionDetailsSidebar tags={tagArray} />
-
         </div>
-
-      </div>}
+      )}
     </>
-
   );
 };
 

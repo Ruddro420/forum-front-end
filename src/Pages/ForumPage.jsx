@@ -98,7 +98,7 @@ const tags = fetauredTag ? Object.keys(fetauredTag).slice(0, 9) : [];
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <div className="mb-6">
+            {/* <div className="mb-6">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 Questions
               </h1>
@@ -106,7 +106,7 @@ const tags = fetauredTag ? Object.keys(fetauredTag).slice(0, 9) : [];
                 Find answers to your programming questions and help others
                 learn.
               </p>
-            </div>
+            </div> */}
 
             {/* <QuestionList posts={paginatedPosts} /> */}
             <QuestionList posts={filteredPosts} />
@@ -141,7 +141,7 @@ const tags = fetauredTag ? Object.keys(fetauredTag).slice(0, 9) : [];
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6 mt-[90px] lg:block md:block hidden">
+          <div className="space-y-6  lg:block md:block hidden">
             {/* <StatsWidget /> */}
             <ActivityFeed />
 
