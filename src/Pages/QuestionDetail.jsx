@@ -265,9 +265,9 @@ const QuestionDetail = () => {
             <div className="lg:col-span-2">
               {/* Question */}
               <div className="bg-white rounded-lg border border-gray-200 p-4 md:p-6 lg:p-8 mb-6">
-                <div className="flex md:flex-col lg::flex-row gap-4 md:gap-6">
+                <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
                   {/* Vote Section - Responsive like QuestionCard */}
-                  <div className="lg:flex flex-row lg:flex-col md:hidden items-center justify-center md:justify-start gap-2 md:gap-3 min-w-0 flex-shrink-0 order-2 lg:order-1">
+                  <div className="lg:flex flex-row lg:flex-col md:hidden hidden items-center justify-center md:justify-start gap-2 md:gap-3 min-w-0 flex-shrink-0 order-2 md:order-1">
                     <button
                       onClick={() => handleVote('upvote')}
                       className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -295,7 +295,7 @@ const QuestionDetail = () => {
                   </div>
 
                   {/* Mobile vote section */}
-                  <div className="flex flex-row md:flex lg:hidden items-center justify-between  md:space-y-2 md:min-w-0 order-2 lg:order-1">
+                  <div className="flex flex-row md:flex lg:hidden items-center justify-between  md:space-y-2 md:min-w-0 order-2 md:order-2 lg:order-1">
                     <div className="flex items-center gap-2">
                       <div
                         className={`px-3 py-1 lg:py-2 rounded-lg text-center ${
@@ -341,7 +341,7 @@ const QuestionDetail = () => {
                   </div>
 
                   {/* Content */}
-                  <div className="flex-1 order-1 lg:order-2">
+                  <div className="flex-1 order-1 md:order-1">
                     <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 md:mb-4">
                       {post.title}
                     </h1>
@@ -388,7 +388,7 @@ const QuestionDetail = () => {
                       </div>
                     </div>
 
-                    {/* Tags */}
+                    {/* Subjects (tag) */}
                     <div className="flex flex-wrap gap-2 mb-4">
                       {tagArray.map((tag, index) => (
                         <Link
@@ -418,7 +418,7 @@ const QuestionDetail = () => {
                     </div>
 
                     {/* Author Info */}
-                    <div className="flex items-center justify-end gap-4 md:gap-0 pt-4 border-t border-gray-200">
+                    <div className="lg:flex md:hidden hidden items-center justify-end gap-4 md:gap-0 pt-4 border-t border-gray-200">
                       <div className="flex items-center space-x-3">
                         <div className="text-right">
                           <div className="text-xs md:text-sm text-gray-500">
@@ -438,7 +438,29 @@ const QuestionDetail = () => {
                         </div>
                       </div>
                     </div>
+
                   </div>
+                  {/* Author Info  Mobile*/}
+                    <div className="md:flex flex order-3 lg:hidden items-center justify-end gap-4 md:gap-0 pt-4 border-t border-gray-200">
+                      <div className="flex items-center space-x-3">
+                        <div className="text-right">
+                          <div className="text-xs md:text-sm text-gray-500">
+                            asked by
+                          </div>
+                          <div className="font-medium text-gray-900 text-sm md:text-base">
+                            {post?.student ? post.student.first_name : "Admin"}
+                          </div>
+                        </div>
+                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium text-xs md:text-sm">
+                          {post?.student
+                            ? post?.student?.first_name
+                                .split(" ")
+                                .map((n) => n[0])
+                                .join("")
+                            : "A"}
+                        </div>
+                      </div>
+                    </div>
                 </div>
               </div>
 
