@@ -96,8 +96,8 @@ const tags = fetauredTag ? Object.keys(fetauredTag).slice(0, 9) : [];
       )}
 
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
+        <div className="grid grid-cols-1  lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 ">
             {/* <div className="mb-6">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 Questions
@@ -141,39 +141,40 @@ const tags = fetauredTag ? Object.keys(fetauredTag).slice(0, 9) : [];
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6  lg:block md:block hidden">
+          <div className="space-y-6  lg:block md:hidden">
             {/* <StatsWidget /> */}
-            <ActivityFeed />
-
-            {/* Featured Tags */}
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Featured Subjects
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {tags.length > 0 ? (
-                  tags.map((tag) => (
-                    <span
-                      key={tag}
-                      onClick={() => {
-                        navigate(`/forum/?tag=${tag}`);
-                        setSelectedCategoryId(null);
-                        setCurrentPage(1);
-                      }}
-                      className={`px-3 py-1 rounded-lg text-sm font-medium cursor-pointer transition-colors ${
-                        filterTag === tag
-                          ? "bg-blue-600 text-white"
-                          : "bg-blue-100 text-blue-800 hover:bg-blue-200"
-                      }`}
-                    >
-                      {tag}
+            <div className="space-y-6 overflow-y-auto" style={{ maxHeight: '80vh' }}>
+              <ActivityFeed />
+              {/* Featured Tags */}
+              <div className="bg-white rounded-lg border border-gray-200 p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Featured Subjects
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {tags.length > 0 ? (
+                    tags.map((tag) => (
+                      <span
+                        key={tag}
+                        onClick={() => {
+                          navigate(`/forum/?tag=${tag}`);
+                          setSelectedCategoryId(null);
+                          setCurrentPage(1);
+                        }}
+                        className={`px-3 py-1 rounded-lg text-sm font-medium cursor-pointer transition-colors ${
+                          filterTag === tag
+                            ? "bg-blue-600 text-white"
+                            : "bg-blue-100 text-blue-800 hover:bg-blue-200"
+                        }`}
+                      >
+                        {tag}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-sm text-gray-500">
+                      No subjects available.
                     </span>
-                  ))
-                ) : (
-                  <span className="text-sm text-gray-500">
-                    No subjects available.
-                  </span>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>

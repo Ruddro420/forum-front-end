@@ -1,6 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { ArrowDown, ArrowUp, Bookmark, Clock, Eye, MessageCircle } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  Bookmark,
+  Clock,
+  Eye,
+  MessageCircle,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router";
@@ -22,14 +29,14 @@ const QuestionCard = ({ question }) => {
     sub_category,
   } = question;
 
-  const tagArray = tag?.split(',') || [];
+  const tagArray = tag?.split(",") || [];
 
   const tagColors = [
-    'bg-blue-100 text-blue-800',
-    'bg-green-100 text-green-800',
-    'bg-purple-100 text-purple-800',
-    'bg-yellow-100 text-yellow-800',
-    'bg-pink-100 text-pink-800',
+    "bg-blue-100 text-blue-800",
+    "bg-green-100 text-green-800",
+    "bg-purple-100 text-purple-800",
+    "bg-yellow-100 text-yellow-800",
+    "bg-pink-100 text-pink-800",
   ];
 
   // redirect forum to answers
@@ -37,13 +44,15 @@ const QuestionCard = ({ question }) => {
 
   const answersQuestion = () => {
     navigate(`/forum/question-detail/${id}`);
-  }
+  };
   // get views
   const [views, setViews] = useState(0);
 
   const getViewCount = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_SERVER_API}/post/views/${id}`);
+      const res = await fetch(
+        `${import.meta.env.VITE_SERVER_API}/post/views/${id}`
+      );
       const data = await res.json();
       setViews(data.views || 0);
     } catch (err) {
@@ -51,13 +60,15 @@ const QuestionCard = ({ question }) => {
     }
   };
   useEffect(() => {
-    getViewCount()
-  }, [id])
+    getViewCount();
+  }, [id]);
 
   useEffect(() => {
     const fetchVotes = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_SERVER_API}/vote-count/${id}`);
+        const res = await fetch(
+          `${import.meta.env.VITE_SERVER_API}/vote-count/${id}`
+        );
         const data = await res.json();
         if (data.success) {
           setVotes(data.data);
@@ -72,10 +83,10 @@ const QuestionCard = ({ question }) => {
   // add vote
   const handleVote = async (voteType) => {
     if (!userId) {
-      toast.error('Please login for voting');
+      toast.error("Please login for voting");
       setTimeout(() => {
-        navigate('/login')
-      }, 2000)
+        navigate("/login");
+      }, 2000);
       return;
     }
 
@@ -97,7 +108,9 @@ const QuestionCard = ({ question }) => {
 
       if (data.success) {
         // Refresh vote count
-        const voteRes = await fetch(`${import.meta.env.VITE_SERVER_API}/vote-count/${id}`);
+        const voteRes = await fetch(
+          `${import.meta.env.VITE_SERVER_API}/vote-count/${id}`
+        );
         const voteData = await voteRes.json();
         if (voteData.success) {
           setVotes(voteData.data);
@@ -109,7 +122,7 @@ const QuestionCard = ({ question }) => {
       console.error("Vote failed:", err);
     }
   };
-  
+
   function stripHtml(html) {
     const tmp = document.createElement("DIV");
     tmp.innerHTML = html;
@@ -117,23 +130,25 @@ const QuestionCard = ({ question }) => {
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 hover:shadow-md transition-shadow duration-200">
+    <div className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 hover:shadow-md transition-shadow duration-200 ">
       {/* Mobile Header - Only visible on small screens */}
       <div className="flex justify-between items-start mb-3 md:hidden">
         <div className="flex items-center space-x-2">
           <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-xs text-white font-medium">
-            {question?.student ? question?.student.first_name.charAt(0) : 'A'}
+            {question?.student ? question?.student.first_name.charAt(0) : "A"}
           </div>
-          <span className="text-sm font-medium text-gray-700">{question?.student?.first_name || 'Admin'}</span>
+          <span className="text-sm font-medium text-gray-700">
+            {question?.student?.first_name || "Admin"}
+          </span>
         </div>
         <button className="p-1 hover:bg-gray-100 rounded transition-colors">
-          <Bookmark className="h-4 w-4 text-gray-400 hover:text-blue-600" />
+          {/* <Bookmark className="h-4 w-4 text-gray-400 hover:text-blue-600" /> */}
         </button>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4">
-        {/* Vote Section - Horizontal on mobile, vertical on desktop */}
-        <div className="flex flex-row md:flex-col items-center justify-between md:justify-start md:space-y-2 md:min-w-0 order-2 md:order-1">
+      <div className="flex flex-col lg:flex-row gap-4">
+        {/* Desktop Vode section */}
+        <div className="lg:flex md:hidden hidden flex-row md:flex-col items-center justify-between md:justify-start md:space-y-2 md:min-w-0 order-2 lg:order-1">
           <div className="flex items-center md:flex-col">
             <button
               onClick={() => handleVote("upvote")}
@@ -146,7 +161,7 @@ const QuestionCard = ({ question }) => {
               {votes.upvotes}
             </span>
           </div>
-          
+
           <div className="flex items-center md:flex-col">
             <span className="text-lg font-medium bg-red-200 text-red-600 px-2 py-1 md:p-2 rounded mx-2 md:mx-0 md:my-1">
               {votes.downvotes}
@@ -161,10 +176,61 @@ const QuestionCard = ({ question }) => {
           </div>
         </div>
 
+        {/* Mobile vote section */}
+        <div className="flex flex-row md:flex lg:hidden items-center justify-between  md:space-y-2 md:min-w-0 order-2 lg:order-1">
+          <div className="flex items-center gap-2">
+            <div
+            className={`px-3 py-1 lg:py-2 rounded-lg text-center ${
+              isAnswered
+                ? "bg-green-100 text-green-800"
+                : "bg-gray-100 text-gray-600"
+            }`}
+          >
+            <div className="text-base lg:text-lg font-semibold">
+              {question.comments?.length > 0 ? question.comments.length : 0} answers
+            </div>
+            {/* <div className="text-xs"></div> */}
+          </div>
+          <div className="text-center">
+            <div className="flex items-center text-gray-500">
+              <Eye className="h-3 w-3 mr-1" />
+              <span className="text-xs">{views}</span>
+            </div>
+          </div>
+          </div>
+
+          <div className="flex items-center ">
+            <button
+              onClick={() => handleVote("upvote")}
+              className="p-1 hover:bg-gray-100 rounded transition-colors"
+            >
+              <span className="text-lg font-medium bg-green-200 text-green-600 px-4  rounded flex items-center gap-2">
+                {votes.upvotes} 👍
+              </span>
+            </button>
+            <button
+              onClick={() => handleVote("downvote")}
+              className="p-1 hover:bg-gray-100 rounded transition-colors"
+            >
+              <span className="text-lg font-medium bg-red-200 text-red-600 px-4 rounded flex items-center gap-2">
+                {votes.downvotes} 👎
+              </span>
+            </button>
+          </div>
+        </div>
+
         {/* Stats - Horizontal on mobile, vertical on desktop */}
-        <div className="flex flex-row md:flex-col items-center justify-around md:justify-start md:space-y-3 md:min-w-0 order-3 md:order-2 border-t border-b md:border-0 py-2 my-2 md:py-0 md:my-0">
-          <div className={`px-3 py-1 md:py-2 rounded-lg text-center ${isAnswered ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
-            <div className="text-base md:text-lg font-semibold">{question.comments?.length > 0 ? question.comments.length : 0}</div>
+        <div className="lg:flex md:hidden flex-row lg:flex-col items-center justify-around lg:justify-start lg:space-y-3 lg:min-w-0 order-3 lg:order-2 border-t border-b lg:border-0 py-2 my-2 lg:py-0 lg:my-0">
+          <div
+            className={`px-3 py-1 lg:py-2 rounded-lg text-center ${
+              isAnswered
+                ? "bg-green-100 text-green-800"
+                : "bg-gray-100 text-gray-600"
+            }`}
+          >
+            <div className="text-base lg:text-lg font-semibold">
+              {question.comments?.length > 0 ? question.comments.length : 0}
+            </div>
             <div className="text-xs">answers</div>
           </div>
           <div className="text-center">
@@ -176,20 +242,23 @@ const QuestionCard = ({ question }) => {
         </div>
 
         {/* Content */}
-        <div className="flex-1 min-w-0 order-1 md:order-3">
+        <div className="flex-1 min-w-0 order-1 lg:order-3">
           {/* Desktop Header - Hidden on mobile */}
           <div className="hidden md:flex items-start justify-between mb-2">
-            <h3 onClick={answersQuestion} className="text-lg font-semibold text-gray-900 hover:text-blue-600 cursor-pointer line-clamp-2 pr-4">
+            <h3
+              onClick={answersQuestion}
+              className="text-lg font-semibold text-gray-900 hover:text-blue-600 cursor-pointer line-clamp-2 pr-4"
+            >
               {title}
             </h3>
             <button className="p-1 hover:bg-gray-100 rounded transition-colors">
-              <Bookmark className="h-4 w-4 text-gray-400 hover:text-blue-600" />
+              {/* <Bookmark className="h-4 w-4 text-gray-400 hover:text-blue-600" /> */}
             </button>
           </div>
 
           {/* Mobile Title */}
-          <h3 
-            onClick={answersQuestion} 
+          <h3
+            onClick={answersQuestion}
             className="text-lg font-semibold text-gray-900 hover:text-blue-600 cursor-pointer line-clamp-2 mb-2 md:mb-0 md:pr-4 md:hidden"
           >
             {title}
@@ -212,7 +281,10 @@ const QuestionCard = ({ question }) => {
           </div>
 
           <p className="text-gray-600 text-sm mb-3 md:mb-4 line-clamp-2">
-            {stripHtml(details)}
+            {/* Responsive description: break lines and wrap on md devices */}
+            <span className="break-words md:break-normal w-full md:max-w-md lg:max-w-full block">
+              {stripHtml(details)}
+            </span>
           </p>
 
           {/* Tags */}
@@ -221,8 +293,9 @@ const QuestionCard = ({ question }) => {
               <Link
                 key={index}
                 to={`/forum/?tag=${tag.trim()}`}
-                className={`px-2 py-1 rounded text-xs font-medium cursor-pointer hover:opacity-80 transition-opacity ${tagColors[index % tagColors.length]
-                  }`}
+                className={`px-2 py-1 rounded text-xs font-medium cursor-pointer hover:opacity-80 transition-opacity ${
+                  tagColors[index % tagColors.length]
+                }`}
               >
                 {tag.trim()}
               </Link>
@@ -238,15 +311,22 @@ const QuestionCard = ({ question }) => {
               </div>
               <div className="flex items-center">
                 <MessageCircle className="h-3 w-3 mr-1" />
-                <span>{question.comments?.length > 0 ? question.comments.length : 0} answers</span>
+                <span>
+                  {question.comments?.length > 0 ? question.comments.length : 0}{" "}
+                  answers
+                </span>
               </div>
             </div>
 
             <div className="flex items-center space-x-2">
               <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-xs text-white font-medium">
-                {question?.student ? question?.student.first_name.charAt(0) : 'A'}
+                {question?.student
+                  ? question?.student.first_name.charAt(0)
+                  : "A"}
               </div>
-              <span className="font-medium text-gray-700">{question?.student?.first_name || 'Admin'}</span>
+              <span className="font-medium text-gray-700">
+                {question?.student?.first_name || "Admin"}
+              </span>
             </div>
           </div>
 
@@ -258,7 +338,9 @@ const QuestionCard = ({ question }) => {
             </div>
             <div className="flex items-center">
               <MessageCircle className="h-3 w-3 mr-1" />
-              <span>{question.comments?.length > 0 ? question.comments.length : 0}</span>
+              <span>
+                {question.comments?.length > 0 ? question.comments.length : 0}
+              </span>
             </div>
           </div>
         </div>

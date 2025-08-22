@@ -46,12 +46,14 @@ const Sidebar = ({ isOpen, onClose }) => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
+        className={`
+          ${isOpen ? 'fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out translate-x-0' : 'hidden'}
+          lg:static lg:inset-0 lg:block lg:w-64 lg:bg-white lg:border-r
+        `}
       >
-        <div className="flex md:mt-0 lg:mt-0 mt-16 flex-col lg:min-h-[90vh] pt-4 lg:pt-6">
+        <div className="flex md:mt-0 lg:mt-0 mt-16 flex-col min-h-[60vh] md:min-h-[90vh] pt-4 lg:pt-6">
           {/* Navigation */}
-          <nav className="flex-1 px-4 space-y-1">
+          <nav className="flex-1 px-4 space-y-1 ">
             {navigationItems.map((item, index) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.url;

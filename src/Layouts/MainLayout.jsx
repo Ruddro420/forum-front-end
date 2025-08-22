@@ -14,7 +14,7 @@ const MainLayout = () => {
   const { loading } = useAuth();
 
   return (
-    <>
+    <div className="w-full max-w-full min-w-0">
       {loading ? <div className="w-screen h-screen flex justify-center items-center"><Loader /> </div>: <>
         <ScrollToTop />
 
@@ -22,18 +22,18 @@ const MainLayout = () => {
           onMenuToggle={() => setIsSidebarOpen(!isSidebarOpen)}
           isMenuOpen={isSidebarOpen}
         />
-        <div className="flex">
+        <div className="flex w-full min-w-0">
           <Sidebar
             isOpen={isSidebarOpen}
             onClose={() => setIsSidebarOpen(false)}
           />
-          <main className="flex-1 lg:ml-0">
+          <main className="flex-1 lg:ml-0 min-w-0">
             <Outlet />
           </main>
         </div>
         <Toaster position='top-center' />
       </>}
-    </>
+    </div>
   );
 };
 

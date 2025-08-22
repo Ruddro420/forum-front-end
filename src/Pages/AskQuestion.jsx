@@ -12,8 +12,9 @@ const AskQuestion = () => {
   const [tags, setTags] = useState([]);
   const [currentTag, setCurrentTag] = useState("");
   const [loading, setLoading] = useState(false);
+  const [questionFile, setQuestionFile] = useState(null);
   // get user
-  const { user, fetchPost, fetchTotalData, fetchUserPost } = useAuth()
+  const { user, fetchPost, fetchTotalData, fetchUserPost } = useAuth();
 
   const addTag = (tag) => {
     if (tag && !tags.includes(tag) && tags.length < 5) {
@@ -41,20 +42,27 @@ const AskQuestion = () => {
       return;
     }
 
-    const data = {
-      title,
-      details: content,
-      tag: tags.join(","), // You can store tags as comma-separated string or array
-      category_id: user?.category_id,
-      sub_category_id: user?.sub_category_id,
-      student_id: user?.id,
-    };
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("details", content);
+    formData.append("tag", tags.join(","));
+    formData.append("category_id", user?.category_id);
+    formData.append("sub_category_id", user?.sub_category_id);
+    formData.append("student_id", user?.id);
+    if (questionFile) {
+      formData.append("file", questionFile);
+    }
 
     try {
       setLoading(true);
-      await axios.post(`${import.meta.env.VITE_SERVER_API}/add/posts`, data, {
-        withCredentials: true,
-      });
+      await axios.post(
+        `${import.meta.env.VITE_SERVER_API}/add/posts`,
+        formData,
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
       toast.success("Question posted successfully!");
       // Reset form
       setTitle("");
@@ -70,9 +78,6 @@ const AskQuestion = () => {
       setLoading(false);
     }
   };
-
-
-
 
   return (
     <div className=" mx-auto px-4 py-8">
@@ -129,7 +134,6 @@ const AskQuestion = () => {
                 </p>
               </div>
 
-
               {/* Content */}
               <div>
                 <label
@@ -143,7 +147,6 @@ const AskQuestion = () => {
 
                 <RichTextEditor value={content} onChange={setContent} />
 
-
                 {/* <textarea
                   id="content"
                   value={content}
@@ -152,9 +155,18 @@ const AskQuestion = () => {
                   rows={12}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                 /> */}
-
               </div>
-
+              {/* File input for question attachment */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Attach file (optional)
+                </label>
+                <input
+                  type="file"
+                  onChange={(e) => setQuestionFile(e.target.files[0])}
+                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                />
+              </div>
               {/* Tags */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -192,8 +204,6 @@ const AskQuestion = () => {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   disabled={tags.length >= 5}
                 />
-
-
               </div>
 
               {/* Submit */}

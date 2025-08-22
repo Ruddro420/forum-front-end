@@ -12,11 +12,11 @@ const FilterBar = ({ categories, selectedCategoryId, onCategoryChange }) => {
   ];
 
   return (
-    <div className="bg-white border-b border-gray-200 px-4 py-4">
-      <div className="mx-auto">
+    <div className="bg-white border-b border-gray-200 px-4 py-4 w-full min-w-0 ">
+      <div className="overflow-x-auto w-full min-w-0 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100" style={{ maxWidth: '100%' }}>
         {/* Tabs */}
-        <div className="flex flex-wrap items-center justify-between">
-          <div className="flex space-x-1">
+        <div className="flex items-center justify-between">
+          <div className="flex space-x-1 min-w-max" style={{ paddingBottom: '2px' }}>
             {categories.map((cat) => (
               <button
                 key={cat.id}
