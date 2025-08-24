@@ -220,7 +220,7 @@ const QuestionCard = ({ question }) => {
         </div>
 
         {/* Stats - Horizontal on mobile, vertical on desktop */}
-        <div className="lg:flex md:hidden flex-row lg:flex-col items-center justify-around lg:justify-start lg:space-y-3 lg:min-w-0 order-3 lg:order-2 border-t border-b lg:border-0 py-2 my-2 lg:py-0 lg:my-0">
+        <div className="lg:flex md:hidden hidden flex-row lg:flex-col items-center justify-around lg:justify-start lg:space-y-3 lg:min-w-0 order-3 lg:order-2 border-t border-b lg:border-0 py-2 my-2 lg:py-0 lg:my-0">
           <div
             className={`px-3 py-1 lg:py-2 rounded-lg text-center ${
               isAnswered
